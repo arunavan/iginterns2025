@@ -1,0 +1,45 @@
+Create the java project in Eclipse
+Java Project: core-java-excercise-1
+Packages:
+   1.  com.ey.util
+        Class Name: MyMath  ( Utility classes)
+
+	Methods:  
+	1. public static boolean isPerfectNumber(int n);
+		a perfect number is a positive integer that is equal to the sum of 				its positive divisors, excluding the number itself.
+		all its factors except the number itself, returns true if the given
+		number is a perfect number else returns false		
+	2. public static long factorial(int n);
+		returns factorial of the given number
+	3. public static boolean isPrime(int n);
+	4. public static long sumOfPrimes(int n);
+		returns sum of primes numbers between 1 to n.
+		Note: Invoke isPrime() within this method
+	5. public static boolean isArmstrongNumber(int n);
+		returns true if the given number is armstrong number else
+                returns false.
+                if number is 3-digit number say "xyz", armstrong number is 
+			xyz==cube of x+cube of y+cube of z
+
+	  // int->String  (String.valueOf(int)) -> StringBuffer->reverse()->String->int (Integer.parseInt())
+	6. public static int reverseNumber(int n);
+	       returns reverse number of the given number
+	7. public static int decimalToBinary(int n);
+		receives decimal number and returns its binary form
+	8. public static int binaryToDecimal(int n);
+		receives binary number and returns its decimal form
+	9. public static int getSumOfNfibos(int n);
+		returns sum of n fibonacci numbers.
+
+		Ex. n=10
+                    0 1 1 2 3 5 8 13 21 34
+                    0+1+1+2+3+5+8 + 13+21+34 = 88
+
+
+	10. public static boolean isPalindromeNumber(int n);
+		Ex. 1991 is a palindrome number  		
+
+   2.  com.ey.ui
+		Tester Class Name: MyMathDemo
+			Test the methods of MyMath class
+
