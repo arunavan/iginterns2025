@@ -24,10 +24,7 @@ final class Product{
 	public Double getPrice() {
 		return price;
 	}
-
-	
 }
-
 public class ImmutableDemo {
 	public static void main(String[] args) {
 		Product p=new Product(101,"box",999.99);
