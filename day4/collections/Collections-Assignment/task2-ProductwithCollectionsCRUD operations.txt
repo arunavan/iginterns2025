@@ -1,0 +1,93 @@
+package com.ey.collections.task;
+
+
+public class Product {
+	Integer id;
+	String name;
+	public Product(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + "]";
+	}
+	@Override
+	public int hashCode() {
+		
+		return this.id.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+	
+		Product other = (Product) obj;
+		if(this.id==other.id  && this.name.equals(other.name))
+			return true;
+		else
+			return false;
+	}
+	
+	
+	
+}
+
+
+
+package com.ey.collections.task;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductService {
+	
+	static List<Product> plist=new ArrayList<>();
+	
+	public String addProduct(Product p) {
+		plist.add(p);
+		return "success";
+		
+	}
+	public int deleteProduct(Product p) { //to be  implement
+		return 1;
+	}
+	public int updateProduct(Product p) {//to be  implement
+		return 1;
+	}
+	public void  listProducts(){
+		plist.forEach(x->System.out.println(x));
+	}
+	public Product getProduct(Integer id) {//to be  implement
+		return new Product(12,"box");
+	}
+}
+
+
+
+
+
+
+package com.ey.collections.task;
+
+import java.util.List;
+
+public class ProductTest {
+
+	public static void main(String[] args) {  //rest, run, ui,
+		ProductService ps=new ProductService();
+
+		//menu should be displayed, take user choice to perform operation, 1...5
+		
+		Product product=new Product(10,"box");
+		Product product1=new Product(11,"box1");
+		
+		String result=ps.addProduct(product);
+		String result1=ps.addProduct(product1);
+		
+		System.out.println(result);
+		
+		ps.listProducts();
+
+	}
+
+}
