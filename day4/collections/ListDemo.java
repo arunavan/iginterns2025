@@ -2,16 +2,16 @@ package com.insight.day4.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
-
 public class ListDemo {
-
 	public static void main(String[] args) {
-		
 		ArrayList<Integer> l=new ArrayList<>();
+		//Collections.synchronizedList(l);
+		
 		//LinkedList<Integer> l=new LinkedList<>();
 		//Vector<Integer> l=new Vector<>();
 		l.add(3);  //autoboxing
@@ -20,7 +20,6 @@ public class ListDemo {
 		l.add(3);
 		l.add(1);
 		l.add(6);
-		
 		System.out.println(l);
 		System.out.println(l.indexOf(1));
 		l.remove(5);
@@ -41,17 +40,17 @@ public class ListDemo {
 		for(Integer it:l)
 			System.out.println(it);
 		System.out.println(" iterator");
-		
 		Iterator<Integer> itr=l.iterator();
 		
 		while(itr.hasNext()) { //fwd
 			//Integer x=itr.next();
 				//	if(x==4)
 				//		itr.remove();
+			l.add(345);
 			System.out.println(itr.next());
 		}
 		
-		
+		l.set(4, 987);
 		ListIterator<Integer> lt=l.listIterator(); //fwd and rev
 		while(lt.hasNext()) {
 			System.out.println(lt.next());
@@ -77,6 +76,11 @@ public class ListDemo {
 		System.out.println(s.pop());
 		s.clear();
 		System.out.println(s.isEmpty());
+		
+		Object o[]=l.toArray();
+		
+		int a[]= {3,4,5,6,7};
+	//	List<int> l2=Arrays.asList(a);
 		
 	}
 
