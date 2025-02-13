@@ -1,0 +1,642 @@
+
+
+1) compare two strings, if the characters in string 1 are present in
+   string 2, then it should be put as such in output, else '+' should be
+   put in output...ignore case difference.
+
+	input 1:"New York"
+	input 2:"NWYR"
+
+	output:N+w+Y+r+
+
+
+
+
+
+package Set2;
+public class ClassSET1 {
+public static void main(String[] args) {
+		String s1="New York";
+		String s2="NWYR";
+		System.out.println(StringFormatting(s1,s2));
+	}
+public static String StringFormatting(String s1, String s2) {
+	StringBuffer s4=new StringBuffer();
+	String s3=s1.toUpperCase();
+	for(int i=0;i<s2.length();i++)
+		for(int j=0;j<s3.length();j++)
+			if(s2.charAt(i)==s3.charAt(j))
+				s4.append(s1.charAt(j)).append('+');
+	return s4.toString();
+}
+}
+----------------------------------------------------------------------------------------------------------||
+2) input:
+	Searchstring s1="GeniusRajkumarDev";
+	String s2="Raj";
+	String s3="Dev";
+   output:
+        Return 1 if s2 comes before s3 in searchstring else return 2
+
+
+
+
+
+package Set2;
+public class ClassSET2 {
+public static void main(String[] args) {
+	String srch="MaanVeerSinghKhurana";
+	String s1="Veer";
+	String s2="Singh";
+	int n=searchString(srch,s1,s2);
+	if(n==1)
+		System.out.println(s1+" comes before "+s2);
+	else
+		System.out.println(s2+" comes before "+s1);
+}
+public static int searchString(String srch, String s1, String s2) {
+	int n=0;
+	int n1=srch.indexOf(s1);
+	int n2=srch.indexOf(s2);
+	if(n1<n2)
+		n=1;
+	else
+		n=2;
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------------||
+3)  months between two dates
+
+package Set2;
+import java.text.*;
+import java.util.*;
+public class ClassSET3 {
+public static void main(String[] args) throws ParseException {
+	String s1="30/05/2013";
+	String s2="01/06/2013";
+	System.out.println(monthsBetweenDates(s1,s2));
+}
+public static int monthsBetweenDates(String s1, String s2) throws ParseException {
+	SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		Date d1=sdf.parse(s1);
+		Date d2=sdf.parse(s2);
+	Calendar cal=Calendar.getInstance();
+	
+	cal.setTime(d1);
+		int months1=cal.get(Calendar.MONTH);
+		int year1=cal.get(Calendar.YEAR);
+	cal.setTime(d2);
+		int months2=cal.get(Calendar.MONTH);
+		int year2=cal.get(Calendar.YEAR);
+	int n=((year2-year1)*12)+(months2-months1);
+	return n;
+}
+}
+---------------------------------------------------------------------------------------------------------||
+4)  intput="xyzwabcd"
+    intput2=2;
+    input3=4;
+    output=bawz
+
+
+
+
+
+package Set2;
+public class ClassSET4 {
+public static void main(String[] args) {
+	String s1="xyzwabcd";
+	int n1=2,n2=4;
+	System.out.println(retrievalOfString(s1,n1,n2));
+}
+
+public static String retrievalOfString(String s1, int n1, int n2) {
+	StringBuffer sb=new StringBuffer(s1);
+	sb.reverse();
+	String s2=sb.substring(n1, n1+n2);
+	return s2;
+}
+}
+--------------------------------------------------------------------------------------------------------||
+
+5)      Given integer array
+	input :int[] arr={2,3,5,4,1,6,7,7,9};
+
+Remove the duplicate elements and print sum of even numbers in the array..
+print -1 if arr contains only odd numbers
+
+
+
+
+
+package Set2;
+import java.util.*;
+public class ClassSET5 {
+public static void main(String[] args) {
+	int a[]={2,3,5,4,1,6,7,7,9};
+	System.out.println(sumOfEvenNos(a));
+}
+public static int sumOfEvenNos(int[] a) {
+	List<Integer> l1=new ArrayList<Integer>();
+	for(int i=0;i<a.length;i++)
+		l1.add(a[i]);
+	List<Integer> l2=new ArrayList<Integer>();
+	for(int i=0;i<a.length;i++)
+    	for(int j=i+1;j<a.length;j++)
+    		if(a[i]==a[j])
+    			l2.add(a[j]);
+	l1.removeAll(l2);
+	l1.addAll(l2);
+	int n=0,n1;
+	for(int i=0;i<l1.size();i++)
+		if(l1.get(i)%2==0)
+			n+=l1.get(i);
+	if(n==0)
+		n1=-1;
+	else
+		n1=n;	
+	return n1;
+}
+}
+-------------------------------------------------------------------------------------------------------||
+6)	input1="abc2012345"
+	input2="abc2112660"
+	input 3=4
+here "abc**" refers to customer id.
+12345 refers to last month eb reading and 12660 refers to this month eb reading
+find the difference between two readings and multiply it by input3
+
+ie., output=(12660-12345)*4
+
+
+
+
+
+package Set2;
+public class ClassSET6 {
+public static void main(String[] args) {
+	String input1="abc2012345";
+	String input2="abc2112660";
+	int input3=4;
+	System.out.println(meterReading(input1,input2,input3));
+}
+public static int meterReading(String input1, String input2, int input3) {
+	int n1=Integer.parseInt(input1.substring(5, input1.length()));
+	int n2=Integer.parseInt(input2.substring(5, input2.length()));
+	int n=Math.abs((n2-n1)*input3);
+	return n;
+}
+}
+-------------------------------------------------------------------------------------------------------||
+7)Given array of intergers,print the sum of elements sqaring/cubing as per the power of their indices.         
+//answer=  sum=sum+a[i]^i;
+     eg:input:{2,3,5}
+	Output:29
+
+
+
+
+
+package Set2;
+public class ClassSET7 {
+public static void main(String[] args) {
+	int a[]={2,3,5};
+	System.out.println(sumOfElementsWrtIndices(a));
+	}
+public static int sumOfElementsWrtIndices(int[] a) {
+	int s=0;
+	for(int i=0;i<a.length;i++)
+		s+=(Math.pow(a[i], i));
+	return s;
+}
+}
+--------------------------------------------------------------------------------------------------------||
+8)Given array of string check whether all the elements contains only digits not any alaphabets.
+if condn satisfied print 1 else -1.
+Input:{"123","23.14","522"}
+output:1
+
+Input1:{"asd","123","42.20"}
+output:-1
+
+
+
+
+
+package Set2;
+public class ClassSET8 {
+public static void main(String[] args) {
+	String[] input1={"123","23.14","522"};
+	//String[] input1={"asd","123","42.20"};
+	System.out.println(stringOfDigits(input1));
+}
+public static int stringOfDigits(String[] input1) {
+	int n=0;
+	for(int i=0;i<input1.length;i++){
+		String s1=input1[i];
+		for(int j=0;j<s1.length();j++){
+			char c1=s1.charAt(j);
+			if(Character.isDigit(c1))
+				n=1;
+			else {n=-1;break;} }}
+	return n;
+}
+}
+
+--------------------------------------------------------------------------------------------------------||
+9) int[] a={12,14,2,26,35}
+find the difference b/w max and min values in array
+output:35-2=33.
+
+
+
+
+package Set2;
+import java.util.Arrays;
+public class ClassSET9 {
+public static void main(String[] args) {
+	int a[]={12,14,2,26,35};
+	System.out.println(diffBwMaxAndMin(a));
+}
+public static int diffBwMaxAndMin(int[] a) {
+	Arrays.sort(a);
+	int n=a[a.length-1]-a[0];
+	return n;
+}
+}
+---------------------------------------------------------------------------------------------------------||
+10) Given an array find the largest 'span'(span is the number of elements between two same digits)
+    find their sum.
+	a[]={1,4,2,1,4,1,5}
+	Largest span=5
+
+
+
+
+
+package Set2;
+public class ClassSET10 {
+public static void main(String[] args) {
+	int a[]={1,4,2,1,4,1,5};
+	System.out.println("sum of largest span elements:"+largestSpan(a));
+}
+public static int largestSpan(int[] a) {
+	int max=0;
+	int p1=0;
+	int p2=0;
+	int n=0;
+	int sum=0;
+	for(int i=0;i<a.length-1;i++){			
+		for(int j=i+1;j<a.length;j++)					
+			if(a[i]==a[j])					
+				n=j;
+		if(n-i>max){
+			max=n-i;
+			p1=i;
+			p2=n; }
+	}
+	System.out.println("largest span:"+(p2-p1));
+	for(int i=p1;i<=p2;i++)
+		sum=sum+a[i];
+	return (sum);
+}
+}
+----------------------------------------------------------------------------------------------------------||
+11)  input={"1","2","3","4"}
+    output=10
+ie,if string elements are nos,add it.
+    input={"a","b"}
+    output=-1;
+
+
+
+
+
+package Set2;
+public class ClassSET11 {
+public static void main(String[] args) {
+	String s[]={"1","2","3","4"};
+	//String s[]={"a","b","3","4"};
+	System.out.println(checkForStringElements(s));
+}
+public static int checkForStringElements(String[] s) {
+	int n=0;
+	boolean b=false;
+	for(int i=0;i<s.length;i++){
+		String s1=s[i];
+		for(int j=0;j<s1.length();j++){
+			char c=s1.charAt(j);
+			if(Character.isDigit(c))
+				b=true;
+			else{
+				b=false;
+				break;}		}
+		if(b==true)
+			n+=Integer.parseInt(s1);
+		else{
+			n=-1;
+			break;}		}
+	return n;
+}
+}
+-----------------------------------------------------------------------------------------------------------||
+12) arraylist1={ 1,2,3,4,5}
+    arraylist2={ 6,7,8,9,10}
+size of both list should be same 
+output={6,2,8,4,10}
+
+
+
+
+
+package Set2;
+public class ClassSET12 {
+public static void main(String[] args) {
+	int a[]={1,2,3,4,5};
+	int b[]={6,7,8,9,10};
+	int c[]=alternativeIndicesElements(a,b);
+	for(int d:c)
+	System.out.println(d);
+}
+public static int[] alternativeIndicesElements(int[] a, int[] b){
+	int c[]=new int[a.length];
+	if(a.length==b.length)
+		for(int i=0;i<a.length;i++)
+			if(i%2==0)
+				c[i]=b[i];
+			else
+				c[i]=a[i];
+	return c;
+}
+}
+-------------------------------------------------------------------------------------------------------------||
+13) count the number of times the second word in second string occurs in first string-case sensitive
+
+input1=hai hello hai where hai Hai;
+input2=what hai
+output=3;
+
+
+
+
+
+package Set2;
+import java.util.StringTokenizer;
+public class ClassSET13 {
+public static void main(String[] args) {
+	String input1="hai hello how are you?? hai hai";		
+	String input2="what hai";
+	System.out.println(stringOccurance(input1,input2));
+}
+
+public static int stringOccurance(String input1, String input2){
+	int count=0;
+	StringTokenizer t1=new StringTokenizer(input2," ");
+	String s1=t1.nextToken();
+	String s2=t1.nextToken();
+	StringTokenizer t2=new StringTokenizer(input1," ");
+	while(t2.hasMoreTokens()){
+		if(t2.nextToken().equals(s2))
+			count++;	}
+	return count;
+}
+}
+------------------------------------------------------------------------------------------------------------||
+14) find the no.of charcters,that has repeated 3 consecutive times
+input1:"aaabbccc"
+ouput1=2;
+
+
+
+
+
+package Set2;
+public class ClassSET14 {
+public static void main(String[] args) {
+	String input1="aaabbccc";
+	System.out.println(consecutiveRepeatitionOfChar(input1));
+}
+
+public static int consecutiveRepeatitionOfChar(String input1) {
+	int c=0;
+	int n=0;
+	for(int i=0;i<input1.length()-1;i++){
+		if(input1.charAt(i)==input1.charAt(i+1))
+			n++;
+		else 
+			n=0;
+		
+		if(n==2)
+			c++; }
+	return c;
+}
+}
+-----------------------------------------------------------------------------------------------------------||
+15)What will be the DAY of current date in next year
+
+
+
+
+package Set2;
+import java.text.SimpleDateFormat;
+import java.util.*;
+public class ClassSet15 {
+public static void main(String[] args) {
+	Date d=new Date();
+	System.out.println(sameDayOnUpcomingYear(d));
+}
+public static String sameDayOnUpcomingYear(Date d) {
+	Date d1=new Date();
+	d1.setYear(d.getYear()+1);
+	SimpleDateFormat sdf=new SimpleDateFormat("EEEE");
+	String s=sdf.format(d1);
+	return s;
+}
+}
+----------------------------------------------------------------------------------------------------------||
+16)Get all the numbers alone from the string and return the sum.
+
+Input"123gif"
+Output:6
+
+
+
+
+
+package Set2;
+public class ClassSET16 {
+public static void main(String[] args) {
+	String s="1234gif";
+	System.out.println(summationOfNosInaString(s));
+}
+public static int summationOfNosInaString(String s) {
+	int n=0;
+	for(int i=0;i<s.length();i++){
+		char c=s.charAt(i);
+		if(Character.isDigit(c)){
+			String s1=String.valueOf(c);
+			n+=Integer.parseInt(s1);} }
+	return n;
+}
+}
+---------------------------------------------------------------------------------------------------------||
+17)input array={red,green,blue,ivory}
+sort the given array
+reverse the given array
+if user input is 1 it should give oth element of an reversed array.
+
+
+
+
+
+package Set2;
+import java.util.*;
+public class ClassSET17 {
+public static void main(String[] args) {
+	String[] s={"red","green","blue","ivory","yellow"};
+	int n=1;
+	System.out.println(retrievingRequiredColor(s,n));
+}
+public static String retrievingRequiredColor(String[] s, int n) {
+	String s1=new String();
+	List<String> l=new ArrayList<String>();
+	for(int i=0;i<s.length;i++)
+		l.add(s[i]);
+	Collections.sort(l,Collections.reverseOrder());
+	for(int i=0;i<l.size();i++)
+		if(i==(n-1))
+			s1=l.get(i);
+	return s1;
+}
+}
+--------------------------------------------------------------------------------------------------------||
+18)String a="a very fine day"
+output:A Very Fine Day
+
+
+
+
+
+package Set2;
+import java.util.StringTokenizer;
+public class ClassSET18 {
+public static void main(String[] args){
+	String s1="its a very fine day";	
+	System.out.println(capsStart(s1));
+}
+public static String capsStart(String s1){
+	StringBuffer s5=new StringBuffer();
+	StringTokenizer t=new StringTokenizer(s1," ");
+	while(t.hasMoreTokens()){
+		String s2=t.nextToken();
+		String s3=s2.substring(0,1);
+		String s4=s2.substring(1, s2.length());
+		s5.append(s3.toUpperCase()).append(s4).append(" ");	}
+	return s5.toString();
+}
+}
+--------------------------------------------------------------------------------------------------------||
+19)Take the word with a max length in the given sentance
+ in that check for vowels if so count the no.of occurances !
+  Input 1="Bhavane is a good girl"
+  Output =3
+  Input 1="Bhavanee is a good girl"
+  Output =4
+
+
+
+
+
+package Set2;
+import java.util.StringTokenizer;
+public class ClassSET19 {
+public static void main(String[] args) {
+	String s1="Bhavane is a good girl";
+	System.out.println(countVowelsInMaxLengthString(s1));
+}
+public static int countVowelsInMaxLengthString(String s1) {
+	int n1=0, max=0;
+	String s4="AEIOUaeiou";
+	String s3=new String();
+	StringTokenizer t=new StringTokenizer(s1," ");
+	while(t.hasMoreTokens()){
+	String s2=t.nextToken();
+	int n2=s2.length();
+	if(n2>max){
+		max=n2;
+		s3=s2;}	}
+	for(int i=0;i<s3.length();i++)
+		for(int j=0;j<s4.length();j++)
+			if(s3.charAt(i)==s4.charAt(j))
+				n1++;
+	return n1;
+}
+}
+--------------------------------------------------------------------------------------------------------||
+20) for the given string display the middle 2 value, case satisfies only if string is of even length
+ip - java
+op - av
+
+
+
+
+
+package Set2;
+public class ClassSET20 {
+public static void main(String[] args) {
+	String s1="sumithra";
+	System.out.println(printingSubstringOfMiddleChars(s1));
+}
+public static String printingSubstringOfMiddleChars(String s1) {
+	String s2=s1.substring((s1.length()/2)-1, (s1.length()/2)+1);
+	return s2;
+}
+}
+--------------------------------------------------------------------------------------------------------||
+21) Given an array int a[]. Add the sum at even indexes.do the same with odd indexes.
+	if both the sum is equal return 1 or return -1.
+
+
+
+
+
+
+package Set2;
+public class ClassSET21 {
+public static void main(String[] args) {
+	int a[]={9,8,5,3,2,6,4,7,5,1};	
+	System.out.println(oddEvenIndicesCount(a));
+}
+public static int oddEvenIndicesCount(int[] a) {
+	int n1=0,n2=0,n3=0;
+	for(int i=0;i<a.length;i++)
+		if(i%2==0)
+			n1+=a[i];
+		else
+			n2+=a[i];
+	if(n1==n2)
+		n3=1;
+	else
+		n3=-1;
+	return n3;
+}
+}
+-------------------------------------------------------------------------------------------------------||
+22)no of days in a month in specific year
+
+
+
+
+package Set2;
+import java.util.*;
+public class ClassSET22 {
+public static void main(String[] args){
+	Calendar ca=new GregorianCalendar(2013,Calendar.FEBRUARY,03);
+	System.out.println(noOfDaysInaMonth(ca));
+}
+public static int noOfDaysInaMonth(Calendar ca){
+	int n=ca.getActualMaximum(Calendar.DAY_OF_MONTH);
+   	return n;
+}
+}

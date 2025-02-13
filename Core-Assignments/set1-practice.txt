@@ -1,0 +1,1415 @@
+1. A number is given as input. Find the odd digits in the number, add them and find if the sum is odd or not.if even return -1, if odd return 1
+input:52315
+logic:5+3+1+5=14(even)
+output:-1
+input:1112
+logic:1+1+1=3(odd)
+output:1
+
+
+
+package Set1;
+
+public class ClassSet1 {
+	public static int SumOfOddsAndEvens(int n){
+		int n1,n2=0,n3;
+		while(n!=0)
+		{
+			n1=n%10;
+			if((n1%2)!=0)
+				n2+=n1;
+			n/=10;
+		}
+		if(n2%2==0)
+			n3=-1;
+		else
+			n3=1;
+		
+		return n3;	
+	}
+	public static void main(String[] args) {
+		int n=12346;
+		System.out.println(SumOfOddsAndEvens(n));
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.Find the day(Friday) of a date input given as MM-dd-yyyy (format)
+input:12-27-2012
+output:Thursday
+
+
+
+package Set1;
+import java.util.*;
+import java.text.*;
+public class ClassSet2 {
+	public static String getDay(Date d1){
+		String s1;
+		SimpleDateFormat sdf=new SimpleDateFormat("EEEEE");
+		s1=sdf.format(d1);
+		return s1;
+	}
+	public static void main(String[] args) {
+		Date d1=new Date(2012/12/27);
+		System.out.println("day is:"+getDay(d1));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3.A integer array is given as input. find the difference between each element. Return the index of the largest element which has the largest difference gap.
+input: {2,3,4,2,3}
+logic: 2-3=1,3-4=1,4-2=2,2-3=1
+2 is the max diff between 4 and 2,return the index of 4(2)
+output:2
+
+
+
+package Set1;
+
+public class ClassSet3 {
+	public static int getDiffArray(int[] n1){
+		int n2,n3=0,n4=0,i;
+		for(i=0;i<n1.length-1;i++){
+			n2=Math.abs(n1[i]-n1[i+1]);
+			if(n2>n3){
+				n3=n2;
+				n4=i+1; }}
+		return n4;
+	}
+	public static void main(String[] args) {
+		int[] n1={2,9,4,7,6};
+		System.out.println(getDiffArray(n1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4.Given two integer arrays. merge the common elements into a new array. find the sum of the elements
+input1:{1,2,3,4}
+input2:{3,4,5,6}
+logic:{3,4}
+output:7
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet4 {
+	public static int mergeArray(int a[],int b[]){
+		List<Integer> l1=new ArrayList<Integer>();
+		List<Integer> l2=new ArrayList<Integer>();
+		int i,d=0;
+		for(i=0;i<a.length;i++)
+			l1.add(a[i]);
+		for(i=0;i<b.length;i++)
+			l2.add(b[i]);
+		l1.retainAll(l2);
+		for(i=0;i<l1.size();i++)
+			d+=(Integer) l1.get(i);
+		return d;
+	}
+	public static void main(String[] args) {
+		int[] a={1,2,3,4};
+		int[] b={3,4,5,6};
+		System.out.println(mergeArray(a,b));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+5.Given two arrayslist. retrieve the odd position elements form first input and even position elemetns from second list. 
+put it into the new arraylist at the same positions from where they are retrieved from.
+(consider 0th position as even position, and two lists are of same size)
+input1:{12,1,32,3}
+input2:{0,12,2,23}
+output:{0,1,2,3}
+
+
+
+
+package Set1;
+
+public class ClassSet5 {
+	public static int[] retrievePosition(int[] a,int[] b){
+		int[] c=new int[a.length];
+		int i;
+		for(i=0;i<a.length;i++){
+			if(i%2==0)
+				c[i]=b[i];
+			if(i%2!=0)
+				c[i]=a[i]; }
+		return c;
+	}
+	public static void main(String[] args) {
+		int[] a={12,1,32,3};
+		int[] b={0,12,2,23};
+		int[] c=retrievePosition(a,b);
+		for(int d:c)
+			System.out.println(d);
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Sum of fibonaaci series upto given input.
+input:3
+logic:1+1+2
+output:4
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet6 {
+	public static int sumOfFibonacci(int n){
+		int a=-1,b=1,c=0,d=0;
+		for(int i=0;i<=n;i++){
+			c=a+b;
+			a=b; b=c;
+			d+=c;
+		}
+		return d;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		int n=s.nextInt();
+		System.out.println(sumOfFibonacci(n));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7. Retrieve the odd numbers till given input number. add and subtract it consecutively and return the result.
+Input:9
+Output:1+3-5+7-9=-3
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet7 {
+	public static int consecutiveSumSubofOddNos(int n){
+		List<Integer> l1=new ArrayList<Integer>();
+		for(int i=1;i<=n;i++)
+			if(i%2!=0)
+				l1.add(i);
+		int n1=l1.get(0);
+		for(int i=1;i<l1.size();i++)
+			if(i%2!=0)
+				n1=n1+l1.get(i);
+			else
+				n1=n1-l1.get(i);
+		return n1;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		int n=s.nextInt();
+		System.out.println(consecutiveSumSubofOddNos(n));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8. Given date in dd-MM-yyyy format.return the month in full name format(January)
+input:"23-01-2012"
+output:January
+
+
+
+
+package Set1;
+import java.text.SimpleDateFormat;
+import java.util.*;
+public class ClassSet8 {
+	public static String monthDiff(Date d1){
+		SimpleDateFormat sdf=new SimpleDateFormat("MMMM");
+		String s=(sdf.format(d1));
+		return s;
+	}
+	public static void main(String[] args) {
+		Date d1=new Date(23/01/2012);
+		System.out.println(monthDiff(d1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+9. Two dates are given as input in "yyyy-MM-dd" format. Find the number of months between the two dates
+input1:"2012-12-01"
+input2:"2012-01-03"
+output:11
+
+
+
+
+package Set1;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+public class ClassSet9 {
+	public static int monthDiff(String s1,String s2) throws ParseException{
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c=Calendar.getInstance();
+		Date d1=sdf.parse(s1);
+		Date d2=sdf.parse(s2);
+		c.setTime(d1);
+		int m1=c.get(Calendar.MONTH);
+		int y1=c.get(Calendar.YEAR);
+		c.setTime(d2);
+		int m2=c.get(Calendar.MONTH);
+		int y2=c.get(Calendar.YEAR);
+		int n=(y1-y2)*12+(m1-m2);
+		return n;
+	}
+	public static void main(String[] args) throws ParseException {
+		String s1=new String("2013-12-01");
+		String s2=new String("2012-01-03");
+		System.out.println(monthDiff(s1,s2));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10. arraylist of string type which has name#mark1#mark2#mark3 format. retrieve the name of the student who has scored max marks(total of three)
+input:{"arun#12#12#12","deepak#13#12#12"}
+output:deepak
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet10 {
+	public static String retrieveMaxScoredStudent(String[] s1){
+		Map<String, Integer> m1=new HashMap<String, Integer>();
+		for(int i=0;i<s1.length;i++){
+			String s2=s1[i];	
+			StringTokenizer t=new StringTokenizer(s2,"#");
+			String s3=t.nextToken();
+			int n1=Integer.parseInt(t.nextToken());
+			int n2=Integer.parseInt(t.nextToken());
+			int n3=Integer.parseInt(t.nextToken());
+			int n=n1+n2+n3;
+			m1.put(s3, n);
+			}
+		//System.out.println(m1);
+		int max=0;
+		String m=new String();
+		Iterator<String> i=m1.keySet().iterator();
+		while(i.hasNext()){
+			String s4=i.next();
+			int j=m1.get(s4);
+			if(j>max){
+				max=j;
+				m=s4; }
+		}
+		return m;
+	}
+	public static void main(String[] args) {
+		String[] s1={"arun#12#12#12","deepak#13#12#12","puppy#12#11#12"};
+		System.out.println(retrieveMaxScoredStudent(s1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+11.Two inputs of a string array and a string is received. The array shld be sorted in descending order. The index of second input in a array shld be retrieved.
+input1:{"ga","yb","awe"}
+input2:awe
+output:2
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet11 {
+	public static void main(String[] args) {
+		String[] s1={"good","yMe","awe"};
+		String s2="awe";
+		System.out.println(stringRetrieval(s1,s2));
+	}
+	public static int stringRetrieval(String[] s1, String s2){
+		ArrayList<String> l1=new ArrayList<String>();
+		for(int i=0;i<s1.length;i++)
+			l1.add(s1[i]);
+		Collections.sort(l1,Collections.reverseOrder())	;
+		System.out.println(l1);
+		int n=l1.indexOf(s2);
+		return n;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12.A time input is received as stirng. Find if the hour format is in 12 hour format. the suffix am/pm is case insensitive.
+input:"09:36 am"
+output:true
+
+
+
+package Set1;
+import java.text.*;
+import java.util.*;
+public class ClassSet12 {
+	public static boolean hourFormat(String s) throws ParseException{
+		boolean b=false;
+		StringTokenizer st=new StringTokenizer(s," ");
+		String s1=st.nextToken();
+		String s2=st.nextToken(); 	
+		StringTokenizer st1=new StringTokenizer(s1,":");
+		int n1=Integer.parseInt(st1.nextToken()); 
+		int n2=Integer.parseInt(st1.nextToken()); 
+		if((s2.equalsIgnoreCase("am"))|| (s2.equalsIgnoreCase("pm")))
+			if((n1<=12)&&(n2<=59))
+				b=true; 
+		return b;
+	}
+	public static void main(String[] args) throws ParseException {
+		String s="19:36 am";
+		boolean b=hourFormat(s);
+		if(b==true)
+			System.out.println("the time is in 12 hr format");
+		else
+			System.out.println("the time is in 24 hr format");
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+13.Retrieve the palindorme-true number set from given number limit and return the sum
+input1:90 input2:120
+logic:99+101+111
+output:311
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet13 {
+	public static int sumOfPalindromeNos(int n1,int n2){
+		List<Integer> l1=new ArrayList<Integer>();
+		for(int i=n1;i<=n2;i++){
+			int r=0,n3=i;
+			while(n3!=0){
+				r=(r*10)+(n3%10);
+				n3=n3/10;	}
+			if(r==i)
+				l1.add(i);		}
+		System.out.println(l1);
+		int s=0;
+		for(int i=0;i<l1.size();i++)
+			s+=l1.get(i);
+		return s;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		System.out.println("enter the range:");
+		int n1=s.nextInt();
+		int n2=s.nextInt();
+		System.out.println("sum of palindrome nos.within given range is:"+sumOfPalindromeNos(n1,n2));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+14.find the max length-word in a given string and return the max-length word. if two words are of same length return the first occuring word of max-length
+input:"hello how are you aaaaa"
+output:hello(length-5)
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet14 {
+	public static String lengthiestString(String s1){
+		int max=0;
+	    String s2=null;
+        StringTokenizer t=new StringTokenizer(s1," ");
+        while(t.hasMoreTokens()){
+        	s1=t.nextToken();
+        	int n=s1.length();
+        	if(n>max){
+        		max=n;
+        		s2=s1; 	}
+        	}
+        return s2;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		System.out.println("enter the String:");
+		String s1=s.nextLine();
+		System.out.println("the lengthiest string is:"+lengthiestString(s1));
+		}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+15. Get a input string. reverse it and parse it with '-'.
+input:computer
+output:r-e-t-u-p-m-o-c
+
+
+
+package Set1;
+import java.util.Scanner;
+public class ClassSet15 {
+	public static String reversedAndParsedString(String s1){
+		StringBuffer sb=new StringBuffer(s1);
+		sb.reverse();
+		StringBuffer sb1=new StringBuffer();
+		for(int i=0;i<(2*s1.length())-1;i++)
+			if(i%2!=0)
+				sb1=sb.insert(i, '-');
+		return sb1.toString();
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		System.out.println("enter the String:");
+		String s1=s.next();
+		System.out.println("the formatted string is:"+reversedAndParsedString(s1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+16. HashMap with regnum as key and mark as value. find the avg of marks whose key is odd.
+input:{12:90,35:90,33:90,56:88}
+output:avg of(90+90) =90
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet16 {
+	public static int averageOfMarks(Map<Integer,Integer> m1){
+		int n=0,c=0;
+		Iterator<Integer> i=m1.keySet().iterator();
+		while(i.hasNext()){
+			Integer b=i.next();
+			if(b%2!=0){
+				c++;
+				n+=m1.get(b);} }
+		return (n/c);	
+	}
+	public static void main(String[] args) {
+		Map<Integer,Integer> m1=new HashMap<Integer,Integer>();
+		m1.put(367, 89);
+		m1.put(368, 98);
+		m1.put(369, 92);
+		m1.put(366, 74);
+		m1.put(365, 67);
+		System.out.println(averageOfMarks(m1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+17. A integer input is accepted. find the square of individual digits and find their sum.
+input:125
+output:1*1+2*2+5*5
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet16 {
+	public static int averageOfMarks(Map<Integer,Integer> m1){
+		int n=0,c=0;
+		Iterator<Integer> i=m1.keySet().iterator();
+		while(i.hasNext()){
+			Integer b=i.next();
+			if(b%2!=0){
+				c++;
+				n+=m1.get(b);} }
+		return (n/c);	
+	}
+	public static void main(String[] args) {
+		Map<Integer,Integer> m1=new HashMap<Integer,Integer>();
+		m1.put(367, 89);
+		m1.put(368, 98);
+		m1.put(369, 92);
+		m1.put(366, 74);
+		m1.put(365, 67);
+		System.out.println(averageOfMarks(m1));
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+18.Two input strings are accepted. If the two strings are of same length concat them and return, if they are not of same length, reduce the longer string to size of smaller one, and concat them
+input1:"hello"
+input2:"hi" 
+output:"lohi"
+input1:"aaa"
+input2:"bbb"
+output:"aaabbb"
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet18 {
+	public static String concatStrings(String s1,String s2){
+		StringBuffer sb=new StringBuffer();
+		if(s1.length()==s2.length())
+			sb.append(s1).append(s2);
+		else if(s1.length()>s2.length()){
+			s1=s1.substring(s1.length()/2, s1.length());
+			sb.append(s1).append(s2);
+		}
+		else if(s1.length()<s2.length()){
+			s2=s2.substring(s2.length()/2, s2.length());
+			sb.append(s1).append(s2);
+		}
+		return sb.toString();
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		String s1=s.next();
+		String s2=s.next();
+		System.out.println(concatStrings(s1,s2));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+19.accept a string and find if it is of date format "dd/mm/yyyy".
+input:01/13/2012
+output:false
+
+
+
+
+package Set1;
+import java.util.StringTokenizer;
+public class ClassSet19 {
+	public static boolean formattingDate(String s){
+		boolean b1=false;
+		StringTokenizer t=new StringTokenizer(s,"/");
+		int n1=Integer.parseInt(t.nextToken());
+		int n2=Integer.parseInt(t.nextToken());
+		String s2=t.nextToken();
+		int n3=Integer.parseInt(s2);
+		int n4=s2.length();
+		if(n4==4)
+		{
+			if(n3%4==0)
+			{
+				if((n2==2)&&(n1<=29))
+					b1=true;
+				else if((n2==4)||(n2==6)||(n2==9)||(n2==11)&&(n1<=30))
+					b1=true;
+				else if((n2==1)||(n2==3)||(n2==5)||(n2==7)||(n2==8)||(n2==10)||(n2==12)&&(n1<=31))
+					b1=true; 
+			}
+			else 
+			{
+				if((n2==2)&&(n1<=28))
+					b1=true;
+				else if((n2==4)||(n2==6)||(n2==9)||(n2==11)&&(n1<=30))
+					b1=true;
+				else if((n2==1)||(n2==3)||(n2==5)||(n2==7)||(n2==8)||(n2==10)||(n2==12)&&(n1<=31))
+					b1=true; 
+			}
+		}
+		return b1;
+	}
+	public static void main(String[] args) {
+	String s="31/5/2012";
+	boolean b=formattingDate(s);
+	if(b==true)
+		System.out.println("date is in dd/MM/yyyy format");
+	else
+		System.out.println("date is not in dd/MM/yyyy format");
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20. Get a integer array as input. Find the average of the elements which are in the position of prime index
+input:{1,2,3,4,5,6,7,8,9,10}
+logic:3+4+6+8(the indeces are prime numbers)
+output:21
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet20 {
+	public static int sumOfPrimeIndices(int[] a,int n){
+		int n1=0;
+		for(int i=2;i<n;i++){
+			int k=0;
+			for(int j=2;j<i;j++)
+				if(i%j==0)
+					k++;
+			if(k==0)
+				n1+=a[i];	}
+		return n1;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		System.out.println("enter the array limit:");
+		int n=s.nextInt();
+		System.out.println("enter the array elements:");
+		int[] a=new int[n];
+		for(int i=0;i<n;i++)
+			a[i]=s.nextInt();
+		System.out.println(sumOfPrimeIndices(a,n));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+21.Find the extension of a given string file.
+input: "hello.jpeg"
+output: "jpeg"
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet21 {
+	public static String extensionString(String s1){
+		StringTokenizer t=new StringTokenizer(s1,".");
+		t.nextToken();
+		String s2=t.nextToken();
+		return s2;
+	}
+	public static void main(String[] args) {
+		String s1="hello.jpeg";
+		System.out.println(extensionString(s1));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+22.Get two integer arrays as input. Find if there are common elements in the arrays. find the number of common elements.
+input1: {1,2,3,4}
+input2: {3,4,5,6}
+output: 4(3,4,3,4)
+
+
+
+
+package Set1;
+public class ClassSet22 {
+	public static int commonElements(int[] a,int[] b){
+		int c=0;
+		for(int i=0;i<a.length;i++)
+			for(int j=0;j<b.length;j++)
+				if(a[i]==b[j])
+					c++;
+		return (2*c);
+	}
+	public static void main(String[] args){
+		int a[]={1,2,3,4,5};
+		int b[]={3,4,5,6,7};
+		System.out.println(commonElements(a,b));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+23.Find if a given pattern appears in both the input strings at same postions.
+input1: "hh--ww--"
+input2: "rt--er--"
+output: true(false otherwise)
+
+
+
+
+
+package Set1;
+public class ClassSet23 {
+	public static boolean stringPattern(String s1,String s2){
+		String st1=s1.length()<s2.length()?s1:s2;
+	    String st2=s1.length()>s2.length()?s1:s2;
+        boolean b=true;
+        String s=st2.substring(st1.length());
+	    if(s.contains("-"))
+	    	 b=false;
+	    else{
+        loop:
+	    for(int i=0;i<st1.length();i++)
+	    	if((st1.charAt(i)=='-') || (st2.charAt(i)=='-'))
+	    		if(st1.charAt(i)!=st2.charAt(i)){
+	    			 b=false;
+	    			 break loop;  }
+	    	} 
+	    return b;
+	}
+	public static void main(String[] args) {
+		String s1="he--ll--";
+		String s2="we--ll--";
+		boolean b=stringPattern(s1,s2);
+		if(b==true)
+			System.out.println("same pattern");
+		else
+			System.out.println("different pattern");
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+24. Input a int array. Square the elements in even position and cube the elements in odd position and add them as result.
+input: {1,2,3,4}
+output: 1^3+2^2+3^3+4^2
+
+
+
+
+package Set1;
+public class ClassSet24 {
+public static int squaringAndCubingOfElements(int[] a){
+	int n1=0,n2=0;
+	for(int i=0;i<a.length;i++)
+		if(i%2==0)
+			n1+=(a[i]*a[i]*a[i]);
+		else
+			n2+=(a[i]*a[i]);
+	return (n1+n2);
+}
+public static void main(String[] args) {
+		int a[]={1,2,3,4,5,6};
+		System.out.println(squaringAndCubingOfElements(a));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+25. Check whether a given string is palindrome also check whether it has atleast 2 different vowels
+input: "madam"
+output: false(no 2 diff vowels)
+
+
+
+
+package Set1;
+public class ClassSet25 {
+	public static boolean palindromeAndVowelCheck(String s){
+		boolean b=true;
+		int c=0;
+		String s1="aeiou";
+		StringBuffer sb=new StringBuffer(s);
+		String s2=sb.reverse().toString();
+		if(!s2.equals(s))
+			b=false;
+		else{
+		loop:
+		for(int i=0;i<s1.length();i++)
+			for(int j=0;j<s.length();j++)
+				if(s1.charAt(i)==s.charAt(j)){
+					c++; 
+					continue loop; }
+		if(c<2)
+			b=false;
+		}	
+		return b;
+	}
+public static void main(String[] args) {
+		String s="deed";
+		System.out.println(palindromeAndVowelCheck(s));
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+26. Find no of characters in a given string which are not repeated.
+input: "hello"
+output: 3
+
+
+
+
+package Set1;
+public class ClassSet26 {
+public static int noOfnonRepeatedCharacters(String s1){
+		StringBuffer sb=new StringBuffer(s1);
+		for(int i=0;i<sb.length();i++){
+			int n=0;
+			for(int j=i+1;j<sb.length();j++)
+				if(sb.charAt(i)==sb.charAt(j)){
+					sb.deleteCharAt(j);
+					n++; }
+				if(n>0){
+					sb.deleteCharAt(i);
+					i--;}		}
+		return sb.length();
+	}
+public static void main(String[] args) {
+		String s1="preethi";
+		System.out.println(noOfnonRepeatedCharacters(s1));
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+27. Get a input string. Find if it is a negative number, if true return the absolute value, in other cases return -1.
+input: "-123"
+output: 123
+input: "@123"
+output: -1
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet27 {
+	public static int negativeString(String s1){
+		int n1=0;
+		if(s1.startsWith("-")){
+		int n=Integer.parseInt(s1);
+		if(n<0)
+			n1=Math.abs(n);}
+		else
+			n1=-1;
+		return n1;
+	}
+public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		String s1=s.next();
+		System.out.println(negativeString(s1));
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+28.An arraylist of Strings is given as input. The count of the String elements that are not of size input2 string is to be returned.
+input1: {"aaa","bb","cccc","d"}
+input2: "bb"
+output: 3("bb"-length:2)
+
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet28 {
+	public static int StringsNotOfGivenLength(List<String> l1,String s1){
+		int n1=s1.length();
+		int c=0;
+		for(int i=0;i<l1.size();i++){
+			int n2=l1.get(i).length();
+			if(n1!=n2)
+				c++;
+		}
+		return c;
+	}
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		System.out.println("enter the no.of elements:");
+		int n=s.nextInt();
+		List<String> l1=new ArrayList<String>();
+		for(int i=0;i<n;i++)
+			l1.add(s.next());
+		System.out.println("enter the input string:");
+		String s1=s.next();
+		System.out.println(StringsNotOfGivenLength(l1,s1));
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+29.An array of integers is given.The given element is removed new array is returned.
+input1:{10,10,20,30,76}
+output: {20,20,76}(10 is asked to remove)
+
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet29 {
+	public static int[] removalOfGivenElementFromArray(int[] a,int c){
+		List<Integer> l1=new ArrayList<Integer>();
+		for(int i=0;i<a.length;i++)
+			if(a[i]!=c)
+				l1.add(a[i]);
+		int b[]=new int[l1.size()];
+		for(int i=0;i<b.length;i++)
+			b[i]=l1.get(i);
+		return b;
+	}
+	public static void main(String[] args) {
+	int a[]={10,10,20,30,40,50};
+	int c=10;
+	int[] b=removalOfGivenElementFromArray(a,c);
+	for(int d:b)
+		System.out.println(d);
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+30. Find the number of days between two input dates.
+
+package Set1;
+import java.text.*;
+import java.util.*;
+public class ClassSet30 {
+public static int dateDifference(String s1,String s2) throws ParseException{
+	SimpleDateFormat sd=new SimpleDateFormat("dd/MM/yyyy");
+	Date d=sd.parse(s1);
+	Calendar c=Calendar.getInstance();
+	c.setTime(d);
+	long d1=c.getTimeInMillis();
+	d=sd.parse(s2);
+	c.setTime(d);
+	long d2=c.getTimeInMillis();
+	int n=Math.abs((int) ((d1-d2)/(1000*3600*24)));
+	return n;
+	}
+public static void main(String[] args) throws ParseException {
+	String s1="27/12/2009";
+	String s2="15/09/2012";
+	System.out.println(dateDifference(s1,s2));
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+31.Enter yout name and return a string "print the title first and then comma and then first letter of initial name.
+
+package Set1;
+import java.util.*;
+public class ClassSet31 {
+	public static String retrieveName(String s1){
+		StringTokenizer t=new StringTokenizer(s1," ");
+		String s2=t.nextToken();
+		String s3=t.nextToken();
+		StringBuffer sb=new StringBuffer(s2);
+		sb.append(',').append(s3.charAt(0));
+		return sb.toString();
+	}
+	public static void main(String[] args) {
+		String s1="Bhavane Raghupathi";
+		System.out.println(retrieveName(s1));
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+32.Write a Program that accepts a string and removes the duplicate characters.
+
+package Set1;
+public class ClassSet32 {
+	public static String removalOfDuplicateCharacters(String s1){
+		StringBuffer sb=new StringBuffer(s1);
+		for(int i=0;i<s1.length();i++)
+			for(int j=i+1;j<s1.length();j++)
+				if(s1.charAt(i)==s1.charAt(j))
+					sb.deleteCharAt(j);
+		return sb.toString();
+	}
+	public static void main(String[] args) {
+		String s1="bhavane";
+		System.out.println(removalOfDuplicateCharacters(s1));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+33.validate a password 
+i) there should be atleast one digit
+ii) there should be atleast one of '#','@' or '$' .
+iii)the password should be of 6 to 20 characters
+iv) there should be more uppercase letter than lower case.
+v) should start with an upper case and end with lower case
+ 
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet33 {
+public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		String st=s.next();
+		boolean b=validatingPassword(st);
+		if(b==true)
+			System.out.println("valid password");
+		else
+			System.out.println("Invalid Password");
+	}
+
+public static boolean validatingPassword(String st) {
+	boolean b1=false,b2=false;
+	if(Character.isUpperCase(st.charAt(0)))
+		if(Character.isLowerCase(st.charAt(st.length()-1)))
+			if(st.length()>=6 && st.length()<=20)
+				for (int i = 0; i < st.length();i++)   
+		    	{   char c = st.charAt(i);   
+		    	    if(Character.isDigit(c)){   
+		    	      b1=true; break; }    	}
+	int x=0,y=0;
+	for(int i = 0; i < st.length(); i++)
+	      if(Character.isUpperCase(st.charAt(i)))
+	        x++;
+	      else if(Character.isLowerCase(st.charAt(i)))
+		    y++;
+	if(b1==true)
+		if(x>y)
+			for (int i = 0; i < st.length();i++)   
+	    	{   char c = st.charAt(i);   
+	    	    if(c=='#' || c=='@' || c=='$'){   
+	    	      b2=true; break; }    	}
+	return b2;
+}
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+34. find the average of the maximum and minimum number in an integer array
+
+package Set1;
+import java.util.*;
+public class ClassSet34 {
+	public static void main(String[] args) {
+		int[] a={10,54,23,14,32,45};
+		System.out.println(avgOfMaxandMinNoinArray(a));
+	}
+	public static int avgOfMaxandMinNoinArray(int[] a) {
+		Arrays.sort(a);
+		int b=a[0];
+		int c=a[a.length-1];
+		return (b+c)/2;
+	}
+
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+35.validate the ip address in the form a.b.c.d
+   where a,b,c,d must be between 0and 255
+   if validated return 1 else return 2
+
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet35 {
+	public static void main(String[] args) {
+		String ipAddress="010.230.110.160";
+	    boolean b=validateIpAddress(ipAddress);
+	    if(b==true)
+	    	System.out.println("valid ipAddress");
+	    else
+	    	System.out.println("not a valid ipAddress");
+	}
+	public static boolean validateIpAddress(String ipAddress) {
+		boolean b1=false;
+		StringTokenizer t=new StringTokenizer(ipAddress,".");
+		int a=Integer.parseInt(t.nextToken());
+		int b=Integer.parseInt(t.nextToken());
+		int c=Integer.parseInt(t.nextToken());
+		int d=Integer.parseInt(t.nextToken());
+		if((a>=0 && a<=255)&&(b>=0 && b<=255)&&(c>=0 && c<=255)&&(d>=0 && d<=255))
+			b1=true;
+		return b1;
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+36. find the three consecutive characters in a string. if the string consists any three 
+   consecutive characters return 1 else return -1
+   like AAAxyzaaa will return true.
+
+
+
+
+
+package Set1;
+public class ClassSet36 {
+public static void main(String[] args) {
+	String s1="aaaaxyzAAA";
+	boolean b=consecutiveCharactersCheck(s1);
+	if(b==true)
+		System.out.println("presence of consecutive characters");
+	else
+		System.out.println("absence of consecutive characters");
+	}
+
+public static boolean consecutiveCharactersCheck(String s1) {
+	boolean b=false;
+	int c=0;
+	for(int i=0;i<s1.length()-1;i++)
+		if((s1.charAt(i+1)-s1.charAt(i))==1)
+				c++;
+	if(c>=2)
+		b=true;
+	return b;
+}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+37.String encrption. replace the odd-index character with next character(if it is 'z' replace with 'a'..if 'a' with 'b' as such), 
+leave the even index as such. return the encrypted string.
+
+
+
+
+package Set1;
+public class ClassSet37 {
+public static void main(String[] args) {
+	String s="preethi";
+	System.out.println(oddEncryptionOfString(s));
+	}
+public static String oddEncryptionOfString(String s) {
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<s.length();i++){
+		char c=s.charAt(i);
+		if(c%2!=0){
+			c=(char)(c+1);
+			sb.append(c);  }
+		else
+			sb.append(c);   }
+	return sb.toString();
+}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+38. Retrieve the max from array which is in a odd-index
+
+package Set1;
+import java.util.*;
+public class ClassSet38 {
+public static void main(String[] args) {
+	int[] a={10,23,45,54,32,14,55,65,56};
+	System.out.println(retrieveMaxFromOddIndex(a));
+	}
+public static int retrieveMaxFromOddIndex(int[] a) {
+	List<Integer> l=new ArrayList<Integer>();
+	for(int i=0;i<a.length;i++)
+		if(i%2!=0)
+			l.add(a[i]);
+	int b=0;
+	for(int i=0;i<l.size();i++){
+		int c=(Integer) l.get(i);
+		if(c>b)
+			b=c; }
+	return b;
+}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+39.GIVEN A STRING 555-666-1234
+DISPLAY AS 55-56-661-234?
+
+
+
+
+package Set1;
+import java.util.StringTokenizer;
+public class ClassSet39 {
+public static void main(String[] args) {
+	String s="555-666-1234";
+	System.out.println(display(s));
+	}
+public static String display(String s) {
+	StringTokenizer t=new StringTokenizer(s,"-");
+	String s1=t.nextToken();
+	String s2=t.nextToken();
+	String s3=t.nextToken();
+		
+	StringBuffer sb=new StringBuffer();
+	sb.append(s1.substring(0, s1.length()-1)).append('-');
+	sb.append(s1.charAt(s1.length()-1)).append(s2.charAt(0)).append('-');
+	sb.append(s2.substring(1, s2.length())).append(s3.charAt(0)).append('-');
+	sb.append(s3.substring(1, s3.length()));
+	
+	return sb.toString();
+}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+40.input1="Rajasthan";
+input2=2;
+input3=5;
+output=hts;
+
+
+
+
+
+package Set1;
+public class ClassSet40 {
+	public static void main(String[] args) {
+		String input1="Rajasthan";
+		int input2=2, input3=5;
+		System.out.println(retrieveString(input1,input2,input3));
+	}
+	public static String retrieveString(String input1, int input2, int input3) {
+		StringBuffer sb=new StringBuffer(input1);
+		sb.reverse();
+		String output=sb.substring(input2, input3);
+		return output;
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+41.input1={1,2,3}
+input2={3,4,5}
+input3;+(union)
+output:inp1+inp2
+input1:{1,2,3,4,5}
+input 2:{2,3,4,5}
+input3=*(intersection)
+output:inp1*inp2
+INPUT1:{1,2,3,4,5}
+INPUT2:{3,6,7,8,9}
+INPUT3:-(MINUS)
+output:inp1-inp2
+
+
+
+
+
+
+package Set1;
+import java.util.*;
+public class ClassSet41 {
+	public static void main(String[] args) {
+		int[] a={1,2,3,4,5};
+		int[] b={0,2,4,6,8};
+		Scanner s=new Scanner(System.in);
+		int c=s.nextInt();
+		int d[]=arrayFunctions(a,b,c);
+		for(int e:d)
+			System.out.println(e);
+	}
+	public static int[] arrayFunctions(int[] a, int[] b, int c) {
+		List<Integer> l1=new ArrayList<Integer>();
+		List<Integer> l2=new ArrayList<Integer>();
+		List<Integer> l3=new ArrayList<Integer>();
+		for(int i=0;i<a.length;i++)
+			l1.add(a[i]);
+		for(int i=0;i<b.length;i++)
+			l2.add(b[i]);
+		
+		switch(c){
+		case 1:
+			l1.removeAll(l2);
+			l1.addAll(l2);
+			Collections.sort(l1);
+			l3=l1;
+			break;
+		case 2:
+			l1.retainAll(l2);
+			Collections.sort(l1);
+			l3=l1;
+			break;
+		case 3:
+			if(l1.size()==l2.size())
+				for(int i=0;i<l1.size();i++)
+					l3.add(Math.abs(l2.get(i)-l1.get(i)));
+			break;
+		}
+		int[] d=new int[l3.size()];
+		for(int i=0;i<d.length;i++)
+			d[i]=l3.get(i);
+		return d;
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+42. input1=commitment;
+  output=cmmitmnt;
+c be the first index position 
+remove even vowels from the string
+
+
+
+
+
+package Set1;
+public class ClassSet42 {
+	public static void main(String[] args) {
+		String s1="cOmmitment";
+		System.out.println(removeEvenElements(s1));
+	}
+	public static String removeEvenElements(String s1) {
+		StringBuffer sb1=new StringBuffer();
+		for(int i=0;i<s1.length();i++)
+			if((i%2)==0)
+				sb1.append(s1.charAt(i));
+			else if((i%2)!=0)
+				if(s1.charAt(i)!='a' && s1.charAt(i)!='e' && s1.charAt(i)!='i' && s1.charAt(i)!='o' && s1.charAt(i)!='u')
+					if(s1.charAt(i)!='A' && s1.charAt(i)!='E' && s1.charAt(i)!='I' && s1.charAt(i)!='O' && s1.charAt(i)!='U')
+					 sb1.append(s1.charAt(i));
+		return sb1.toString();
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+43. Retrieve the odd-position digits from input integer array. Multiply them with their index and return their sum.
+
+package Set1;
+public class ClassSet43 {
+	public static void main(String[] args) {
+		int[] a={5,1,6,2,9,4,3,7,8};
+		System.out.println("Sum Of Odd Position Elements Multiplied With Their Index Is:");
+		System.out.println(retrievalOfOddPositionElements(a));
+	}
+	public static int retrievalOfOddPositionElements(int[] a) {
+		int s=0;
+		for(int i=0;i<a.length;i++)
+			if(i%2!=0)
+				s+=a[i]*i;
+		return s;
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+44. Return the number of days in a month, where month and year are given as input.
+
+package Set1;
+import java.util.*;
+public class ClassSet44 {
+	public static void main(String[] args){
+		String s1="02/2011";
+		System.out.println(noOfDaysInAmonth(s1));
+	}
+	public static int noOfDaysInAmonth(String s1){
+		int n=0;
+		StringTokenizer r=new StringTokenizer(s1,"/");
+		int n1=Integer.parseInt(r.nextToken());
+		int n2=Integer.parseInt(r.nextToken());
+		if(n1==1 || n1==3 || n1==5 ||n1==7 || n1==8 || n1==10 || n1==12)
+			n=31;
+		else if(n1==4 || n1==6 || n1==9 || n1==11)
+			n=30;
+		else if(n1==2){
+			if(n2%4==0)
+				n=29;
+			else
+				n=28; }
+		return n;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+45. Retrieve the non-prime numbers within the range of a given input. Add-up the non-prime numbers and return the result.
+
+package Set1;
+import java.util.*;
+public class ClassSet45 {
+public static void main(String[] args) {
+	int i=20,j=40;
+	System.out.println("sum of non-prime nos. is:"+additionOfnonPrimeNos(i,j));
+	}
+public static int additionOfnonPrimeNos(int i, int j){
+	int k=0;
+	List<Integer> l1=new ArrayList<Integer>();
+	List<Integer> l2=new ArrayList<Integer>();
+	for(int a=i;a<=j;a++){
+		int c=0;
+		for(int b=2;b<a;b++)
+			if(a%b==0)
+				c++;
+		if(c==0)
+			l1.add(a); }
+	for(int e=i;e<=j;e++)
+		l2.add(e);
+	l2.removeAll(l1);
+	for(int d=0;d<l2.size();d++)
+		k+=l2.get(d);
+	return k;
+}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+46. Retrieve the elements in a array, which is an input, which are greater than a specific input number. Add them and find the reverse of the sum.
+
+package Set1;
+public class ClassSet46 {
+public static void main(String[] args) {
+	int[] a={23,35,11,66,14,32,65,56,55,99};
+	int b=37;
+	System.out.println(additionOfRetrievedElements(a,b));
+	}
+public static int additionOfRetrievedElements(int[] a, int b) {
+	int n=0;
+	for(int i=0;i<a.length;i++)
+		if(a[i]>b)
+			n+=a[i];
+	return n;
+}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+47.Input a hashmap. Count the keys which are not divisible by 4 and return.
+
+package Set1;
+import java.util.*;
+public class ClassSet47 {
+	public static void main(String[] args) {
+		Map<Integer, String> m1=new HashMap<Integer, String>();
+		m1.put(24, "preethi");
+		m1.put(32, "bhanu");
+		m1.put(25, "menu");
+		m1.put(31, "priya");
+		System.out.println(fetchingKeysDivisibleByFour(m1));
+	}
+	public static int fetchingKeysDivisibleByFour(Map<Integer, String> m1) {
+		int k=0;
+		Iterator<Integer> i=m1.keySet().iterator();
+		loop:
+		while(i.hasNext()){
+			int j=i.next();
+			if(j%4!=0)
+				k++;
+			continue loop; }
+		return k;
+	}
+}

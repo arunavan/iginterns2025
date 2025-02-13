@@ -1,0 +1,1409 @@
+1) Find the sum of the numbers in the given input string array
+   Input{“2AA”,”12”,”ABC”,”c1a”)
+   Output:6 (2+1+2+1)
+   Note in the above array 12 must not considered as such
+   i.e,it must be considered as 1,2
+
+package Set3;
+public class ClassSeT01 {
+public static void main(String[] args) {
+	String[] s1={"2AA","12","A2C","C5a"};
+	getSum(s1);	}
+public static void getSum(String[] s1) {
+	int sum=0;
+	for(int i=0;i<s1.length;i++)
+		for(int j=0;j<s1[i].length();j++){
+			char c=s1[i].charAt(j);
+			if(Character.isDigit(c)){
+				String t=String.valueOf(c);
+				int n=Integer.parseInt(t);
+				sum=sum+n; } }
+	System.out.println(sum);	}
+} 
+----------------------------------------------------------------------------------------------------||
+2) Create a program to get the hashmap from the given input string array where the key for the hashmap
+   is first three letters of array element in uppercase and the value of hashmap is the element itself
+   Input:{“goa”,”kerala”,”gujarat”}                 [string array]
+   Output:{{GOA,goa},{KER,kerala},{GUJ,Gujarat}}    [hashmap]
+
+package Set3;
+import java.util.*;
+public class ClassSeT02 {
+public static void main(String[] args) {
+	String[] s1={"goa","kerala","gujarat"};
+	putvalues(s1);
+}
+public static void putvalues(String[] s1) {
+	ArrayList<String> l1=new ArrayList<String>();
+	HashMap<String,String> m1=new HashMap<String,String>();
+	ArrayList<String> l2=new ArrayList<String>();
+	for(String s:s1)
+		l1.add(s.toUpperCase().substring(0, 3));
+	for(String s:s1)
+		l2.add(s);	
+	for(int i=0;i<l1.size();i++)
+		m1.put(l1.get(i),l2.get(i));	
+	System.out.println(m1);
+}
+}
+----------------------------------------------------------------------------------------------------||
+3) String[] input1=["Vikas","Lokesh",Ashok]
+   expected output String: "Vikas,Lokesh,Ashok"
+
+package Set3;
+public class ClassSeT03 {
+public static void main(String[] args) {
+	String[] ip={"Vikas","Lokesh","Ashok"};
+	System.out.println(getTheNamesinGivenFormat(ip));
+}
+public static String getTheNamesinGivenFormat(String[] ip) {
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<ip.length;i++)
+		sb.append(ip[i]).append(',');
+	sb.deleteCharAt(sb.length()-1);
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+4) Email Validation
+   String input1="test@gmail.com"
+                1)@ & . should be present;
+                2)@ & . should not be repeated;
+                3)there should be five charcters between @ and .;
+                4)there should be atleast 3 characters before @ ;
+                5)the end of mail id should be .com;
+
+package Set3;
+import java.util.*;
+public class ClassSeT04 {
+public static void main(String[] args) {
+	String ip="test@gmail.com";
+	boolean b=emailIdValidation(ip);
+	if(b==true)
+		System.out.println("valid mail Id");
+	else
+		System.out.println("not a valid Id");
+}
+public static boolean emailIdValidation(String ip) {
+	int i=0;
+	boolean b=false;
+	StringTokenizer t=new StringTokenizer(ip,"@");
+		String s1=t.nextToken();
+		String s2=t.nextToken();
+	StringTokenizer t1=new StringTokenizer(s2,".");
+		String s3=t1.nextToken();
+		String s4=t1.nextToken();
+	if(ip.contains("@") && ip.contains("."))
+		i++;
+	
+	if(i==1)
+		if(s3.length()==5)
+			if(s1.length()>=3)
+				if(s4.equals("com"))
+					b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+5) Square root calculation of
+   ((x1+x2)*(x1+x2))+((y1+y2)*(y1+y2))
+   o/p should be rounded of to int;
+
+package Set3;
+public class ClassSeT05 {
+public static void main(String[] args) {
+	int x1=4,x2=8;
+	int y1=3,y2=5;
+	sqrt(x1,x2,y1,y2);
+}
+public 	static void sqrt(int x1, int x2, int y1, int y2) {
+	int op;
+	op=(int) (Math.sqrt((x1+x2)*(x1+x2))+((y1+y2)*(y1+y2)));
+	System.out.println(op);
+}
+}
+----------------------------------------------------------------------------------------------------||
+6) I/P hashmap<String String>{"ram:hari","cisco:barfi","honeywell:cs","cts:hari"};
+   i/p 2="hari";
+   o/p string[]={"ram","cts"};
+
+package Set3;
+import java.util.*;
+import java.util.Map.Entry;
+public class ClassSeT06 {
+public static void main(String[] args) {
+	HashMap<String,String> m1=new HashMap<String,String>();
+	m1.put("ram","hari");
+	m1.put("cisco","barfi");
+	m1.put("honeywell","cs");
+	m1.put("cts","hari");
+	String s2="hari";
+	getvalues(m1,s2);
+}
+public static void getvalues(HashMap<String, String> m1, String s2) {
+	ArrayList<String>l1=new ArrayList<String>();
+	for(Entry<String, String> m:m1.entrySet()){
+		m.getKey();
+		m.getValue();
+		if(m.getValue().equals(s2))	
+			l1.add(m.getKey());		}
+	String[] op= new String[l1.size()];
+	for(int i=0;i<l1.size();i++){	
+		op[i]=l1.get(i)	;
+		System.out.println(op[i]);	}
+}
+}
+----------------------------------------------------------------------------------------------------||
+7) Input1={“ABX”,”ac”,”acd”};
+   Input2=3;
+   Output1=X$d
+
+package Set3;
+import java.util.*;
+public class ClassSeT07 {
+public static void main(String[] args) {
+	String[] s1={"abc","da","ram","cat"};
+	int ip=3;
+	getStr(s1,ip);
+}
+public  static void getStr(String[] s1, int ip) {
+	String op=" ";
+	String s2=" ";
+	ArrayList<String> l1=new ArrayList<String>();
+	for(String s:s1)
+		if(s.length()==ip)
+		l1.add(s);	
+	StringBuffer buff=new StringBuffer();
+	for(String l:l1){
+	    s2=l.substring(l.length()-1);
+	    buff.append(s2).append("$"); }
+	op=buff.deleteCharAt(buff.length()-1).toString();
+	System.out.println(op);
+}
+}
+----------------------------------------------------------------------------------------------------||
+8) INPUT1= helloworld
+   INPUT2= 2. delete the char,if rpted twice.
+   if occurs more than twice,leave the first occurence and delete the duplicate
+   O/P= helwrd;
+
+package Set3;
+public class ClassSeT08 {
+public static void main(String[] args) {
+	String input1="HelloWorld";
+	int input2=2; 
+    System.out.println(deletingtheCharOccuringTwice(input1,input2));
+}
+public static String deletingtheCharOccuringTwice(String input1, int input2) {
+	StringBuffer sb=new StringBuffer(input1);
+	int c=1;
+	for(int i=0;i<sb.length();i++){
+		c=1;
+		for(int j=i+1;j<sb.length();j++)
+			if(sb.charAt(i)==sb.charAt(j))
+				c++;
+		if(c>=input2){	
+			for(int j=i+1;j<sb.length();j++)
+				if(sb.charAt(i)==sb.charAt(j))
+					sb.deleteCharAt(j);
+			sb.deleteCharAt(i);
+			i--;   }	}
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+9) String[] input={"100","111","10100","10","1111"} input2="10"
+   output=2;count strings having prefix"10" but "10" not included in count
+   operation-- for how many strings input2 matches the prefix of each string in input1
+
+   String[] input={"01","01010","1000","10","011"}
+   output=3; count the strings having prefix"10","01" but "10","01" not included
+
+package Set3;
+import java.util.*;
+public class ClassSeT09 {
+public static void main(String[] args) {
+	String[] ip={"100","111","10100","10","1111"};
+	gteCount(ip);
+}
+public static void gteCount(String[] ip) {
+	int op=0;
+	ArrayList<String> l1=new ArrayList<String>();
+	for(String s:ip)
+		if(s.startsWith("10") || s.startsWith("01") &&(s.length()>2))
+			l1.add(s);
+	op=l1.size();
+	System.out.println(op);
+}
+} 
+----------------------------------------------------------------------------------------------------||
+10) input1=1 ,input2=2 ,input3=3 --- output=6;
+    input1=1 ,input2=13,input3=3 --- output=1;
+    input1=13,input2=2 ,input3=8 --- output=8;
+    if value equal to 13,escape the value '13', as well as the next value to 13.
+    sum the remaining values
+
+package Set3;
+import java.util.*;
+public class ClassSeT10 {
+public static void main(String[] args) {
+	int ip1=13,ip2=2,ip3=8;
+	System.out.println(thirteenLapse(ip1,ip2,ip3));
+}
+public static int thirteenLapse(int ip1, int ip2, int ip3) {
+	List<Integer> l=new ArrayList<Integer>();
+	l.add(ip1);
+	l.add(ip2);
+	l.add(ip3);
+	int s=0;
+	for(int i=0;i<l.size();i++){
+		if(l.get(i)!=13)
+			s+=l.get(i);
+		if(l.get(i)==13)
+			i=i+1;}
+	return s;
+}
+}
+----------------------------------------------------------------------------------------------------||
+11) input="hello"
+    output="hlo"; Alternative positions...
+
+package Set3;
+public class ClassSeT11 {
+public static void main(String[] args) {
+	String s="Hello";	
+	System.out.println(alternatingChar(s));
+}
+public static String alternatingChar(String s){
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<s.length();i++)
+		if(i%2==0)
+			sb.append(s.charAt(i));
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+12) Input1=”Hello World”;  output-------à  “dello WorlH”.
+
+package Set3;
+public class ClassSeT12 {
+public static void main(String[] args) {
+	String s="Hello World";	
+	System.out.println(reArrangingWord(s));
+}
+public static String reArrangingWord(String s) {
+	StringBuffer sb=new StringBuffer();
+	sb.append(s.substring(s.length()-1));
+	sb.append(s.substring(1, s.length()-1));
+	sb.append(s.substring(0, 1));
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+13) Collect no’s frm list1 which is not present in list2 
+    & Collect no’s frm list2 which is not present in list1
+    and store it in output1[].
+    ex: input1={1,2,3,4}; input2={1,2,3,5}; output1={4,5};
+
+package Set3;
+import java.util.*;
+public class ClassSeT13 {
+public static void main(String[] args) {
+	List<Integer> l1=new ArrayList<Integer>();
+	l1.add(1);
+	l1.add(2);
+	l1.add(3);
+	l1.add(4);
+	List<Integer> l2=new ArrayList<Integer>();
+	l2.add(1);
+	l2.add(2);
+	l2.add(3);
+	l2.add(5);
+	int o[]=commonSet(l1,l2);
+	for(int i:o)
+	System.out.println(i);
+}
+public static int[] commonSet(List<Integer> l1, List<Integer> l2) {
+	List<Integer> l3=new ArrayList<Integer>();
+	List<Integer> l4=new ArrayList<Integer>();
+	
+	l3.addAll(l1);l4.addAll(l2);
+	l1.removeAll(l2);l4.removeAll(l3);
+	l1.addAll(l4);
+	
+	int o[]=new int[l1.size()];
+	for(int j=0;j<o.length;j++)
+		o[j]=l1.get(j);
+	return o;
+}
+}
+----------------------------------------------------------------------------------------------------||
+14) String array will be given.if a string is Prefix of an any other string in that array means count.
+
+package Set3;
+public class ClassSeT14 {
+public static void main(String[] args) {
+	String[] a={"pinky","preethi","puppy","preeth","puppypreethi"};
+	System.out.println(namesWithPreFixes(a));
+}
+public static int namesWithPreFixes(String[] a) {
+	int n=0;
+	for(int i=0;i<a.length;i++)
+		for(int j=i+1;j<a.length;j++){
+		String s1=a[i];
+		String s2=a[j];
+		if(s2.startsWith(s1)||s1.startsWith(s2))
+			n++;	}
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------||
+15) count the number of words in the string
+    Input string="i work in cognizant.";
+    output=4;
+
+package Set3;
+import java.util.StringTokenizer;
+public class ClassSeT15 {
+public static void main(String[] args) {
+	String s="I work for cognizant";
+	System.out.println(noOfWordsInString(s));
+}
+public static int noOfWordsInString(String s) {
+	StringTokenizer t=new StringTokenizer(s," "); 
+	return t.countTokens();
+}
+}
+----------------------------------------------------------------------------------------------------||
+16) int[] input={2,1,4,1,2,3,6};
+    check whether the input has the sequence of "1,2,3". if so-
+    output=true;
+    int[] input={1,2,1,3,4,5,8};
+    output=false
+
+package Set3;
+public class ClassSeT16 {
+public static void main(String[] args) {
+	//int[] a={2,1,4,1,2,3,6};
+	int[] a={1,2,1,3,4,5,8};
+	System.out.println(sequenceInArray(a));
+}
+public static boolean sequenceInArray(int[] a) {
+	boolean b=false;
+	int n=0;
+	for(int i=0;i<a.length-1;i++)
+		if((a[i+1]-a[i])==1)
+			n++;
+	if(n==2)
+		b=true;				
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+17) input-- String input1="AAA/abb/CCC"
+    char input2='/'
+    output-- String[] output1;
+    output1[]={"aaa","bba","ccc"};
+
+    operation-- get the strings from input1  using stringtokenizer
+                reverse each string
+                then to lower case
+                finally store it in output1[] string array
+
+package Set3;
+import java.util.*;
+public class ClassSeT17 {
+public static void main(String[] args) {
+	String ip1="AAA/abb/CCC";
+	char ip2='/';
+	String op[]=loweringCasenReverseofaString(ip1,ip2);
+	for(String s:op)
+	System.out.println(s);
+}
+public static String[] loweringCasenReverseofaString(String ip1, char ip2){
+	List<String> l=new ArrayList<String>();
+	StringTokenizer t=new StringTokenizer(ip1,"/");
+	while(t.hasMoreTokens()){
+		StringBuffer sb=new StringBuffer(t.nextToken().toLowerCase());
+		l.add(sb.reverse().toString()); }
+	String op[]=new String[l.size()];
+	for(int i=0;i<op.length;i++)
+		op[i]=l.get(i);
+	return op;
+}
+}
+----------------------------------------------------------------------------------------------------||
+18) Input1=”cowboy”; Output1=”cowcow”;
+    Input1=”so”;output1=”sososo”; 
+    HINT: if they give 3 letter word u have to display 2 time;
+
+package Set3;
+
+public class ClassSeT18 {
+public static void main(String[] args) {
+	String ip1="cowboy";
+	String ip2="cow";
+	System.out.println(printingStringDependingOncharCount(ip1,ip2));
+}
+public static String printingStringDependingOncharCount(String ip1,String ip2) {
+	StringBuffer sb=new StringBuffer();
+	int n1=ip2.length();
+	if(n1==3)
+		for(int i=0;i<n1-1;i++)
+			sb.append(ip1.substring(0, n1));
+	else if(n1==2)
+		for(int i=0;i<n1+1;i++)
+			sb.append(ip1.substring(0, n1));
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+19) input---input1=1;
+            input2=4;
+            input3=1;
+    output1=4;
+    operation--- print the element which is not repeated    
+    if all the inputs r different sum all inputs
+    input---input1=1;
+            input2=2;
+            input3=3;
+    output1=6;
+
+package Set3;
+public class ClassSeT19 {
+public static void main(String[] args) {
+	int ip1=1,ip2=4,ip3=1;
+	//int ip1=1,ip2=2,ip3=3;
+	//int ip1=1,ip2=1,ip3=1;
+	System.out.println(sumOfNonRepeatedChars(ip1,ip2,ip3));
+}
+public static int sumOfNonRepeatedChars(int ip1, int ip2, int ip3){
+	int n=0;
+	if(ip1!=ip2 && ip2!=ip3 && ip3!=ip1)
+		n=ip1+ip2+ip3;
+	else if(ip1==ip2 && ip2==ip3)
+		n=0;
+	else{
+		if(ip1==ip2)
+			n=ip3;
+		else if(ip1==ip3)
+			n=ip2;
+		else if(ip2==ip3)
+			n=ip1;	}
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------||
+20) input1-List1-{apple,orange,grapes}
+    input2-List2-{melon,apple,mango}
+    output={mango,orange}
+    operation-- In 1st list remove strings starting with 'a' or 'g'
+                In 2nd list remove strings ending with 'n' or 'e'
+    Ignore case, return in string array
+
+package Set3;
+import java.util.*;
+public class ClassSeT20 {
+public static void main(String[] args) {
+	List<String> l1=new ArrayList<String>();
+	l1.add("apple");
+	l1.add("orange");
+	l1.add("grapes");
+	List<String> l2=new ArrayList<String>();
+	l2.add("melon");
+	l2.add("apple");
+	l2.add("mango");
+	String[] s2=fruitsList(l1,l2);
+	for(String s3:s2)
+		System.out.println(s3);
+}
+public static String[] fruitsList(List<String> l1, List<String> l2){
+	List<String> l3=new ArrayList<String>();
+	for(int i=0;i<l1.size();i++){
+		String s1=l1.get(i);
+		if(s1.charAt(0)!='a' && s1.charAt(0)!='A' && s1.charAt(0)!='g' && s1.charAt(0)!='G')
+			l3.add(s1); }
+	for(int i=0;i<l2.size();i++){
+		String s1=l2.get(i);
+		if(s1.charAt(s1.length()-1)!='n' && s1.charAt(s1.length()-1)!='N' && s1.charAt(s1.length()-1)!='e' && s1.charAt(s1.length()-1)!='E')
+			l3.add(s1); }
+	Collections.sort(l3);
+	String[] s2=new String[l3.size()];
+	for(int i=0;i<s2.length;i++)
+		s2[i]=l3.get(i);
+	return s2;
+}
+}
+----------------------------------------------------------------------------------------------------||
+21) input1-- Hello*world
+    output-- boolean(true or false)
+    operation-- if the character before and after * are same return true else false
+                if there in no star in the string return false(Ignore case)
+
+package Set3;
+import java.util.*;
+public class ClassSeT21 {
+public static void main(String[] args) {
+	String input="Hello*world";	
+	System.out.println(characterCheck(input));
+}
+public static boolean characterCheck(String input) {
+	boolean b=false;
+	StringTokenizer t=new StringTokenizer(input,"*");
+	String s1=t.nextToken();
+	String s2=t.nextToken();
+	String s3=s1.substring(s1.length()-1);
+	String s4=s2.substring(0,1);
+	if(s3.equalsIgnoreCase(s4))
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+22) input --String input1 ="xaXafxsd"
+    output--String output1="aXafsdxx"
+    operation-- remove the character "x"(only lower case) from string and place at the end
+
+package Set3;
+public class ClassSeT22 {
+public static void main(String[] args) {
+	String input="xaXafxsd";
+	System.out.println(removalOfx(input));
+}
+public static String removalOfx(String input) {
+	StringBuffer sb=new StringBuffer(input);
+	int j=0;
+	for(int i=0;i<sb.length();i++)
+		if(sb.charAt(i)=='x'){
+			sb.deleteCharAt(i);
+			j++;}
+	for(int i=0;i<j;i++)
+		sb.append('x');
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+23) HashMap<String,Integer> h1={“abc”:50,”efg”:70};
+    if the mark is less than 60 then put the output in the
+    HashMap<String,String> h2={“abc”:”fail”,”efg”:”pass”}
+
+package Set3;
+import java.util.*;
+public class ClassSeT23 {
+public static void main(String[] args) {
+	Map<String, Integer> m1=new HashMap<String, Integer>();		
+	m1.put("abc", 90);
+	m1.put("efg", 50);
+	m1.put("mno", 60);
+	m1.put("rst", 75);
+	m1.put("xyz", 35);
+	System.out.println(examResult(m1));
+}
+public static Map<String,String> examResult(Map<String, Integer> m1) {
+	Map<String,String> m2=new HashMap<String, String>();
+	String s1=new String();
+	String s2=new String();
+	int n=0;
+	Iterator<String> i=m1.keySet().iterator();
+	while(i.hasNext()){
+		s1=(String) i.next();
+		n=m1.get(s1);
+		if(n>=60)
+			s2="PASS";
+		else
+			s2="FAIL";
+		m2.put(s1, s2);	}
+	return m2;
+}
+}
+----------------------------------------------------------------------------------------------------||
+24) String i/p1=2012;
+    sTRING i/p2=5
+    IF EXPERIENCE IS GREATER THAN INPUT 2 THEN TRUE;
+
+package Set3;
+import java.text.*;
+import java.util.*;
+public class ClassSeT24 {
+public static void main(String[] args) throws ParseException {
+	String ip1="2012";	
+	String ip2="5";
+	System.out.println(experienceCalc(ip1,ip2));
+}
+public static boolean experienceCalc(String ip1, String ip2) throws ParseException {
+	boolean b=false;
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+		Date d1=sdf.parse(ip1);
+		Date d2=new Date();
+	int n1=d1.getYear();
+	int n2=d2.getYear();
+	int n3=Integer.parseInt(ip2);
+	if((n2-n1)>n3)
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+25) input string="hello", n=2
+    output: lolo
+
+package Set3;
+public class ClassSeT25 {
+public static void main(String[] args) {
+	String s1="hello";
+	int n1=2;
+	System.out.println(formattingOfString(s1,n1));
+}
+public static String formattingOfString(String s1, int n1) {
+	String s2=s1.substring(s1.length()-n1, s1.length());
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<n1;i++)
+		sb.append(s2);
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+26) prove whether a number is ISBN number or not
+    input="0201103311"
+    ISBN number:  sum=0*10 +2*9+ 0*8 +1*7+ 1*6 +0*5+ 3*4 +3*3+ 1*2 +1*1
+    sum%11==0 then it is ISBN number
+
+package Set3;
+public class ClassSeT26 {
+public static void main(String[] args) {
+	String ip="0201103311";
+	boolean b=ISBNnumber(ip);
+	if(b==true)
+		System.out.println("valid ISBN number");
+	else
+		System.out.println("check ur data");
+}
+public static boolean ISBNnumber(String ip) {
+	boolean b=false;
+	int sum=0;
+	for(int i=0,j=ip.length();i<ip.length();i++,j--){
+		String s=String.valueOf(ip.charAt(i));
+		int n=Integer.parseInt(s);
+		sum+=(n*j);	}
+	//System.out.println(sum);
+	if(sum%11==0)
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+27) Validate Password
+    validation based on following criteria:
+  -> minimum length is 8
+  -> should contain any of these @/_/#
+  -> should not start with number/special chars(@/#/_)
+  -> should not end with special chars
+  -> can contain numbers,letters,special chars
+
+package Set3;
+import java.util.*;
+public class ClassSeT40 {
+public static void main(String[] args) {
+	Scanner s=new Scanner(System.in);
+	String s1=s.next();
+	boolean b=passwordValidation(s1);
+	if(b==true)
+		System.out.println("valid password");
+	else
+		System.out.println("not a valid password");
+}
+public static boolean passwordValidation(String s1) {
+	boolean b=false,b1=false,b2=false;
+	if(s1.length()>=8)
+		if(!Character.isDigit(s1.charAt(0)))
+			if(s1.charAt(0)!='@' && s1.charAt(0)!='_' && s1.charAt(0)!='#')
+				if(s1.charAt(s1.length()-1)!='@' && s1.charAt(s1.length()-1)!='_' && s1.charAt(s1.length()-1)!='#')
+					b1=true;
+	if(b1==true)
+		for(int i=0;i<s1.length();i++)
+			if(Character.isAlphabetic(s1.charAt(i)) || Character.isDigit(s1.charAt(i)) || s1.charAt(i)=='#' || s1.charAt(i)=='@' || s1.charAt(i)=='_')
+				b2=true;
+	if(b2==true)
+		if(s1.contains("#") || s1.contains("@") || s1.contains("_"))
+			b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+28) pan card number validation:
+    all letters shud be in caps,shud be of 8 chars.
+    first three letters must be alphabets.
+    next 4 letters shud be digits and last letter shud be an alphabet
+
+package Set3;
+import java.util.*;
+public class ClassSeT28 {
+public static void main(String[] args) {
+	Scanner s=new Scanner(System.in);
+	String pan=s.next();
+	boolean b=panNumberValidation(pan);
+	if(b==true)
+		System.out.println("valid Pancard Number");
+	else
+		System.out.println("not a valid credential");
+}
+public static boolean panNumberValidation(String pan) {
+	boolean b=false,b1=false,b2=false;
+	String s1=pan.substring(0, 3);
+	String s2=pan.substring(3, 7);
+	if(pan.length()==8)
+		if(Character.isAlphabetic(pan.charAt(pan.length()-1)) && Character.isUpperCase(pan.charAt(pan.length()-1)))
+			b1=true;
+	if(b1==true)
+		for(int i=0;i<s1.length();i++)
+			if(Character.isAlphabetic(s1.charAt(i)) && Character.isUpperCase(s1.charAt(i)))
+				b2=true;
+			else
+				{b2=false;break;}
+	
+	if(b2==true)
+		for(int i=0;i<s2.length();i++)
+			if(Character.isDigit(s2.charAt(i)))
+				b=true;
+			else
+			{b=false;break;}
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+29) In a hashmap if key is odd then find average of value as integer
+    ex: h1={1:4,2:6,4:7,5:9}
+        output=(4+9)/2
+
+package Set3;
+import java.util.*;
+public class ClassSeT29 {
+public static void main(String[] args) {
+	Map<Integer, Integer> m1=new HashMap<Integer, Integer>();
+	m1.put(1, 4);
+	m1.put(2, 6);
+	m1.put(4, 7);
+	m1.put(5, 9);
+	System.out.println(avgValuesOfOddKeys(m1));
+}
+public static int avgValuesOfOddKeys(Map<Integer, Integer> m1) {
+	int l=0,m=0;
+	Iterator<Integer> i=m1.keySet().iterator();
+	while(i.hasNext()){
+		int n=(Integer) i.next();
+		if(n%2!=0){
+			m+=m1.get(n);
+			l++;}	}
+	return m/l;
+}
+}
+----------------------------------------------------------------------------------------------------||
+30) Return 1 if the last & first characters of a string are equal else 
+    return -1. Consider case.
+    Eg: Input = "this was great"
+        Output= 1
+
+package Set3;
+public class ClassSeT30 {
+public static void main(String[] args) {
+	String input="this was great";
+	System.out.println(checkForFirstAndLastChar(input));
+}
+public static int checkForFirstAndLastChar(String input) {
+	int n=0;
+	if(input.charAt(0)==input.charAt(input.length()-1))
+		n=1;
+	else n=-1;
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------||
+31) concat two string if length of two string is equal.
+    if length of one string is greater, then remove the character from 
+    largest string and then add. The number of characters removed from 
+    largest string is equal to smallest string's length
+    for example: input 1="hello";
+                 input 2="helloworld";
+                 output="worldhello";
+
+package Set3;
+public class ClassSeT31 {
+public static void main(String[] args) {
+	String ip1="hello";
+	String ip2="helloworld";
+	System.out.println(removalOfCharFromLargestString(ip1,ip2));
+}
+public static String removalOfCharFromLargestString(String ip1,String ip2){
+	StringBuffer sb=new StringBuffer();
+	int n1=ip1.length();
+	int n2=ip2.length();
+	if(n1<n2)
+		sb.append(ip2.substring(n1, n2)).append(ip1);
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+32) i/p: Honesty is my best policy
+    o/p: Honesty
+    Return the maximum word length from the given string.
+    If there are two words of same length then,
+    return the word which comes first based on alphabetical order.
+
+package Set3;
+import java.util.*;
+public class ClassSeT32 {
+public static void main(String[] args) {
+	String s1="is a poppppy preethi";	
+	System.out.println(lengthiestString(s1));
+}
+public static String lengthiestString(String s1) {
+	int max=0;
+	String s2=new String();
+	StringTokenizer t=new StringTokenizer(s1," ");
+	loop:
+	while(t.hasMoreTokens()){
+		String s3=t.nextToken();
+		int n=s3.length();
+		if(n>max){
+			max=n;
+			s2=s3;}
+		if(n==max)
+			for(int i=0;i<s3.length();i++){
+				char c1=s2.charAt(i);
+				char c2=s3.charAt(i);
+				if(c1!=c2){				
+					if(c2<c1)
+						s2=s3;
+					continue loop;}	  }
+	}
+	return s2;
+}
+}
+----------------------------------------------------------------------------------------------------||
+33) In a string check whether all the vowels are present
+    if yes return 1 else 2.
+    ex: String 1="education"
+        output=1.
+
+package Set3;
+public class ClassSeT33 {
+public static void main(String[] args) {
+	String s1="education";
+	System.out.println(vowelsCheck(s1));
+}
+public static boolean vowelsCheck(String s1) {
+	boolean b=false;
+	int n1=0,n2=0,n3=0,n4=0,n5=0;
+	for(int i=0;i<s1.length();i++){
+		char c=s1.charAt(i);
+		if(c=='a' || c=='A')
+			n1++;
+		if(c=='e' || c=='E')
+			n2++;
+		if(c=='i' || c=='I')
+			n3++;
+		if(c=='o' || c=='O')
+			n4++;
+		if(c=='u' || c=='U')
+			n5++;}
+	if(n1==1 && n2==1 && n3==1 && n4==1 && n5==1)
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+34) swap the every 2 chrecters in the given string 
+    If size is odd number then keep the last letter as it is.
+    Ex:- input: forget
+	 output: ofgrte
+    Ex:- input  : NewYork
+         output : eNYwrok
+
+package Set3;
+public class ClassSet34 {
+public static void main(String[] args) {
+	String s1="newyork";
+	System.out.println(formattingGivenString(s1));
+}
+public static String formattingGivenString(String s1) {
+	StringBuffer sb=new StringBuffer();
+	int j=0;
+	if(s1.length()%2==0)
+		j=s1.length();
+	else
+		j=s1.length()-1;
+	
+	for(int i=0;i<j;i=i+2){
+		String s2=(s1.substring(i, i+2));
+		StringBuffer sb1=new StringBuffer(s2);
+		sb.append(sb1.reverse());}
+	
+	String s3=new String();
+	if(s1.length()%2==0)
+		s3=sb.toString();
+	else
+		s3=sb.append(s1.charAt(s1.length()-1)).toString();
+	return s3;
+}
+}
+----------------------------------------------------------------------------------------------------||
+35) i/p: bengal
+    o/p: ceogbl
+    if z is there replace with a
+
+package Set3;
+public class ClassSeT35 {
+public static void main(String[] args) {
+	String s1="bengal";
+	System.out.println(stringFormatting(s1));
+}
+public static String stringFormatting(String s1) {
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<s1.length();i++){
+		char c=s1.charAt(i);
+		if(i%2==0){
+			if(c==122)
+				c=(char) (c-25);
+			else{
+				c=(char) (c+1);}
+				sb.append(c);}
+		else
+			sb.append(c);}
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+36) find the maximum chunk of a given string
+    i/p: this isssss soooo good
+    o/p=5
+
+package Set3;
+import java.util.*;
+public class ClassSeT36 {
+public static void main(String[] args) {
+	String s1="this is sooo good";	
+	System.out.println(maxChunk(s1));
+}
+public static int maxChunk(String s1) {
+	int max=0;
+	StringTokenizer t=new StringTokenizer(s1," ");
+	while(t.hasMoreTokens()){
+		String s2=t.nextToken();
+		int n=0;
+		for(int i=0;i<s2.length()-1;i++)
+			if(s2.charAt(i)==s2.charAt(i+1))
+				n++;
+		if(n>max)
+			max=n;
+	}
+	return (max+1);
+}
+}
+----------------------------------------------------------------------------------------------------||
+37) i/p1: new york
+    i/p2: new jersey
+    o/p: new y+r+
+
+solution:
+package Set3;
+public class ClassSeT37 {
+public static void main(String[] args) {
+	String s1="New york";
+	String s2="New jersey";
+	System.out.println(commonCharsinAstring(s1,s2));
+}
+private static String commonCharsinAstring(String s1, String s2) {
+	int f;
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<s1.length();i++){
+		f=0;
+		char c1=s1.charAt(i);
+		for(int j=0;j<s2.length();j++)
+			if(c1==s2.charAt(j))
+				f=1;
+		if(f!=0)
+			sb.append(c1);
+		else
+			sb.append('+');}
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+38) input1={2,4,3,5,6};
+    if odd  find square 
+    if even find cube
+    finally add it
+    output1=208(4+16+27+125+36)
+
+package Set3;
+public class ClassSeT38 {
+public static void main(String[] args) {
+	int a[]={2,4,3,5,6};
+	System.out.println(summationPattern(a));
+}
+public static int summationPattern(int[] a) {
+	int n1=0,n2=0;
+	for(int i=0;i<a.length;i++)
+		if(a[i]%2==0)
+			n1+=(a[i]*a[i]);
+		else
+			n2+=(a[i]*a[i]*a[i]);
+	return n1+n2;
+}
+}
+----------------------------------------------------------------------------------------------------||
+39) input1="the sun raises in the east";
+    output1=raises;
+    count no vowels in each word and print the word which has max
+    no of vowels if two word has max no of vowel print the first one
+
+package Set3;
+import java.util.*;
+public class ClassSeT39 {
+public static void main(String[] args) {
+	String s1="the sun rises in the east";	
+	System.out.println(wordWithMaxVowelCount(s1));
+}
+public static String wordWithMaxVowelCount(String s1) {
+	int max=0;
+	String s2="aeiouAEIOU";
+	String s3=new String();
+	StringTokenizer t=new StringTokenizer(s1," ");
+	while(t.hasMoreTokens()){
+		String s4=t.nextToken();
+		int c=0;
+		for(int i=0;i<s4.length();i++)
+			for(int j=0;j<s2.length();j++)
+				if(s4.charAt(i)==s2.charAt(j))
+					c++;
+		if(c>max){
+			max=c;
+			s3=s4;}	}
+	return s3;
+}
+}
+----------------------------------------------------------------------------------------------------||
+40) String format : CTS-LLL-XXXX
+    ip1: CTS-hyd-1234
+    ip2: hyderabad
+    -> LLL must be first 3 letters of ip2.
+    -> XXXX must be a 4-digit number
+
+package Set3;
+import java.util.*;
+public class ClassSeT41 {
+public static void main(String[] args) {
+	String s1="CTS-hyd-1234";
+	String s2="hyderabad";
+	boolean b=formattingString(s1,s2);
+	if(b==true)
+		System.out.println("String format:CTS-LLL-XXXX");
+	else
+		System.out.println("not in required format");
+}
+public static boolean formattingString(String s1, String s2) {
+	String s3=s2.substring(0, 3);
+	boolean b=false;
+	StringTokenizer t=new StringTokenizer(s1,"-");
+	String s4=t.nextToken();
+	String s5=t.nextToken();
+	String s6=t.nextToken();
+	if(s4.equals("CTS") && s5.equals(s3) && s6.length()==4)
+		for(int i=0;i<s6.length();i++){
+			if(Character.isDigit(s6.charAt(i)))
+				b=true;
+			else{
+				b=false;}}
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+41) ip: "this is sample test case"
+    op: "this amplec"
+    remove the duplicates in the given string
+
+package Set3;
+import java.util.*;
+public class ClassSeT42 {
+public static void main(String[] args) {
+	String s1="this is sample test case";
+	System.out.println(removeDuplicates(s1));
+}
+public static String removeDuplicates(String s1) {
+	StringBuffer sb=new StringBuffer();
+	Set<Character> c1=new LinkedHashSet<Character>();
+	for(int i=0;i<s1.length();i++)
+		c1.add(s1.charAt(i));
+	for(char c2:c1)
+		sb.append(c2);
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+42) input1 is a map<Integer,Float>
+    {1:2.3,2:5.6,3:7.7,4:8.4}
+    get the even number from keys and find the avg of values of these keys.
+    answer should be rounded to two numbers after decimal
+    eg:- the output number 15.2499999 should be 15.25
+
+package Set3;
+import java.util.*;
+public class ClassSeT43 {
+public static void main(String[] args) {
+	Map<Integer,Float> m1=new HashMap<Integer, Float>();
+	m1.put(1, (float) 12.93);
+	m1.put(2, (float) 15.67);
+	m1.put(3, (float) 17.27);
+	m1.put(4, (float) 14.88);
+	System.out.println(avgOfEvenKeyValues(m1));
+}
+public static float avgOfEvenKeyValues(Map<Integer, Float> m1) {
+	int n1=0,n3=0;
+	float n2=0;
+	Iterator<Integer> i=m1.keySet().iterator();
+	while(i.hasNext()){
+		n1=(Integer) i.next();
+		if(n1%2==0){
+			n2+=m1.get(n1);
+			n3++;}	}
+	float n=Math.round((n2/n3)*100)/100f;
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------||
+43) Color Code Validation:
+	String should starts with the Character '#'.
+	Length of String is 7. 
+	It should contain 6 Characters after '#' Symbol.
+	It should contain Characters Between 'A-F' and Digits '0-9'.
+	if String is acceptable then Output1=1
+	else  Output1=-1; 
+
+package Set3;
+import java.util.*;
+public class ClassSeT44 {
+public static void main(String[] args) {
+	Scanner s=new Scanner(System.in);
+	String s1=s.next();
+	boolean b=colorCodeValidation(s1);
+	if(b==true)
+		System.out.println("valid color code");
+	else
+		System.out.println("invalid color code");
+}
+public static boolean colorCodeValidation(String s1) {
+	boolean b=false,b1=false;
+	String s2=s1.substring(1,s1.length());
+	if(s1.length()==7)
+		if(s1.charAt(0)=='#')
+			b1=true;
+	
+	if(b1==true)
+		for(int i=0;i<s2.length();i++){
+			char c=s2.charAt(i);
+			if(c!='#'){
+			if((Character.isAlphabetic(c)&& Character.isUpperCase(c)) || Character.isDigit(c))
+				b=true;
+			else{
+				b=false;
+				break;}}}
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+44) Find the Maximum span of the given array.
+    span is the number of elements between the duplicate element
+    including those 2 repeated numbers.
+    if the array as only one elemnt,then the span is 1.
+	input[]={1,2,1,1,3}
+	output1=4
+	input[]={1,2,3,4,1,1,5}
+	output1=6
+
+package Set3;
+public class ClassSeT45 {
+public static void main(String[] args) {
+	int[]a={1,2,1,1,3};
+	System.out.println(maxSpan(a));
+}
+public static int maxSpan(int[] a) {
+	String s2 = null;
+	int n=0;
+	StringBuffer sb=new StringBuffer();
+	for(int i=0;i<a.length;i++)
+		sb.append(String.valueOf(a[i]));
+	String s1=sb.toString();
+	for(int i=0;i<s1.length();i++)
+		for(int j=i+1;j<s1.length();j++)
+			if(s1.charAt(i)==s1.charAt(j))
+				s2=String.valueOf(s1.charAt(j));
+	int n1=s1.indexOf(s2);
+	int n2=s1.lastIndexOf(s2); 
+	for(int i=n1+1;i<n2;i++)
+		n++;
+	return (n+2);
+}
+}
+----------------------------------------------------------------------------------------------------||
+45) Getting the first and last n letters from a word where wordlength > 2n.
+    Ex: Input: california,3.
+        output: calnia.
+
+package Set3;
+public class ClassSeT46 {
+public static void main(String[] args) {
+	String s1="california";
+	int n1=3;
+	System.out.println(subStringOfgivenString(s1,n1));
+}
+public static String subStringOfgivenString(String s1, int n1) {
+	StringBuffer sb=new StringBuffer();
+	sb.append(s1.substring(0, n1)).append(s1.substring(s1.length()-n1,s1.length()));
+	return sb.toString();
+}
+}
+----------------------------------------------------------------------------------------------------||
+46) input1="aBrd";
+    input2="aqrbA";
+    input3=2;
+    output1=boolean true;
+    2nd char of ip1 and last 2nd char of ip2 show be equal
+
+package Set3;
+public class ClassSeT46 {
+public static void main(String[] args) {
+	String ip1="aBrd";
+	String ip2="aqrbA";
+	int ip3=2;
+	System.out.println(charCheck(ip1,ip2,ip3));
+}
+public static boolean charCheck(String ip1, String ip2, int ip3){
+	boolean b=false;
+	String s1=String.valueOf(ip1.charAt(ip3-1));
+	String s2=String.valueOf(ip2.charAt(ip2.length()-ip3));
+	if(s1.equalsIgnoreCase(s2))
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+47) Add elements of digits:9999 
+    output:9+9+9+9=3+6=9;
+
+package Set3;
+public class ClassSeT47 {
+public static void main(String[] args) {
+	int n=9999;
+	System.out.println(conversiontoaSingleDigit(n));
+}
+public static int conversiontoaSingleDigit(int n){
+	loop:
+		while(n>10){
+			int l=0,m=0;
+			while(n!=0){
+				m=n%10;
+				l=l+m;
+				n=n/10; }
+			n=l;
+			continue loop; }
+	return n;
+}
+}
+----------------------------------------------------------------------------------------------------||
+48) leap year or not using API?
+
+package Set3;
+import java.util.*;
+public class ClassSeT48 {
+public static void main(String[] args) {
+	String s="2013";
+	System.out.println(leapYear(s));
+}
+public static boolean leapYear(String s) {
+	int n=Integer.parseInt(s);
+	GregorianCalendar c=new GregorianCalendar();
+	boolean b=c.isLeapYear(n);
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+49) perfect no or not?
+
+package Set3;
+public class ClassSeT49 {
+public static void main(String[] args) {
+	int n=28;
+	System.out.println(perfectNumber(n));
+}
+public static boolean perfectNumber(int n) {
+	int n1=0;
+	boolean b=false;
+	for(int i=1;i<n;i++)
+		if(n%i==0)
+			n1+=i;
+	//System.out.println(n1);
+	if(n1==n)
+		b=true;
+	return b;
+}
+}
+----------------------------------------------------------------------------------------------------||
+50) HashMap<String,String> input1={“mouse”:”100.2”,”speaker”:”500.6”,”Monitor”:”2000.23”};
+    String[] input2={“speaker”,”mouse”};
+    Float output=600.80(500.6+100.2);
+
+package Set3;
+import java.util.*;
+public class ClassSeT50 {
+public static void main(String[] args) {
+	HashMap<String, String> m1=new HashMap<String, String>();
+	m1.put("mouse", "100.2");
+	m1.put("speaker","500.6");
+	m1.put("monitor", "2000.23");
+	String[] s={"speaker","mouse"};
+	System.out.println(getTheTotalCostOfPheripherals(m1,s));
+}
+public static float getTheTotalCostOfPheripherals(HashMap<String,String> m1,
+		String[] s) {
+	Float f=(float) 0;
+	Iterator<String> i=m1.keySet().iterator();
+	while(i.hasNext()){
+	String s1=(String) i.next();
+	Float f1=Float.parseFloat(m1.get(s1));
+	for(int j=0;j<s.length;j++)
+		if(s[j].equals(s1))
+			f+=f1;	}
+	return f;
+}
+}
+----------------------------------------------------------------------------------------------------||
+51) Input1=845.69, output=3:2;
+    Input1=20.789; output=2:3;
+    Input1=20.0; output=2:1;  
+    output is in Hashmap format.
+    Hint: count the no of digits.
+
+package Set3;
+import java.util.*;
+public class ClassSeT51 {
+public static void main(String[] args) {
+	double d=845.69;
+	System.out.println(noOfDigits(d));
+}
+public static String noOfDigits(double d) {
+	int n1=0,n2=0;
+	String s=String.valueOf(d);
+	StringTokenizer t=new StringTokenizer(s,".");
+	String s1=t.nextToken();
+	String s2=t.nextToken();
+	n1=s1.length();
+	n2=s2.length();
+	if(s1.charAt(0)=='0')
+		n1=s1.length()-1;
+	if(n2!=1)
+		if(s2.charAt(s2.length()-1)=='0')
+			n2=s2.length()-1;
+	String s3=String.valueOf(n1)+":"+String.valueOf(n2);
+	return s3;
+}
+}

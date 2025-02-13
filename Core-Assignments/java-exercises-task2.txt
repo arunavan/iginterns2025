@@ -1,0 +1,121 @@
+			String API excercises
+
+
+Java Project: core-java-excercise-2
+Package: com.ig.ui
+
+1. Write tester class, Program1 to read a sentence in string variable and convert the first letter
+of each word to capital case. Print the final string.
+Note: - Only the first letter in each word should be in capital case in final string.
+Write a static method getCapitalized which accepts a string. The return type (String) should
+return the capitalized string.
+
+
+Sample Input:
+Now is the time to act!
+Sample Output:
+Now Is The Time To Act!
+
+2.Write tester class, Program2 to read an integer array and find the index of larger 
+number of the two adjacent numbers with largest difference. Print the index.
+Write a static method findMaxDistance which accepts an integer array and the number of elements in the array. 
+The return type (Integer) should return index.
+
+Refer sample output for formatting specifications.
+Sample Input :
+
+4
+8
+6
+1
+9
+4
+Sample Output :
+4
+ 
+[In the sequence 4 8 6 1 9 4 the maximum distance is 8 (between 1 and 9). 
+The function should return the index of the greatest of two. 
+In this case it is 9 (which is at index 4). output = 4.]
+
+
+
+3. Write tester class, Program3 to read a string and validate PAN number against following 
+rules:
+1. There must be eight characters.
+2. First three letters must be alphabets followed by four digit number and ends 
+with alphabet
+3. All alphabets should be in capital case.
+ 
+Print "Valid" if the PAN no. is valid, else print "Invalid".
+ 
+Write a static method validatePAN which accepts a string. 
+The return type is Boolean type
+
+Sample Input 1:
+ALD3245E
+Sample Output 1:
+Valid
+Sample Input 2:
+OLE124F
+Sample Output 2:
+Invalid
+
+
+4.Write a tester class, Program4 to read a string and a character, and reverse 
+the string and convert it in a format such that each character is separated by the 
+given character. Print the final string.
+Write a static method reshape() which accepts a string and a character. 
+The return type (String) should return the final string.
+ 
+Sample Input:
+Rabbit
+-
+Sample Output:
+t-i-b-b-a-R
+
+
+5. Write a tester class, Program5 to read a sentence as a string, 
+return a string which is concatenation of the last letter of each word of the sentence in capital letters.
+Print the final string.
+ 
+Write a static method getLastLetter() which accepts a string. The return type (string) 
+should return the final string.
+
+
+6.Write a tester class,Program6 to read  a string and return an integer based 
+on the following rules.
+If the first word and the last word in the String match, then return the number 
+of characters in the word else return sum of the characters in both words. 
+Assume the Strings to be case - sensitive.
+Write a static method calculateWordSum which accepts a 
+string. The return type (integer) should be based on the above rules.
+
+Input and Output Format:
+Input consists of a string with maximum size of 100 characters.
+Output consists of a string.
+Refer sample output for formatting specifications.
+Sample Input 1:
+IBM TECHNOLOGIES IBM
+Sample Output 1:
+3
+Sample Input 2:
+HELLO HOW ARE YOU
+Sample Output 2:
+8
+
+7.Write a tester class,Program7 to accept a 10 digit positive number in the 
+format XXX-XXX-XXXX as a string input, write a program to convert this number to 
+the format XX-XX-XXX-XXX.
+ 
+Write a static method “convertFormat” that accepts a String argument and 
+returns a String.
+ 
+Input and Output Format:
+Input consists of a String.
+Output consists of a String.
+ 
+Sample Input:
+555-666-1234
+ 
+Sample Output:
+55-56-661-234
