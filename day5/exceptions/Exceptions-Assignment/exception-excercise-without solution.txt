@@ -1,0 +1,65 @@
+Exception-handling
+
+com.ig.model package
+
+1. public class Activity{
+  	private String string1;
+  	private String string2;
+  	private String operator;
+
+ 	// provide default and all-arg constructor
+ 	//provide getter and setter methods
+
+	}
+
+ 
+com.ig.exception package
+2. Create a custom exception OperatorException
+
+
+ com.ey.ui package
+
+3. 
+public class Source {  
+
+  public static void main(String args[] )  {
+   	 Activity activity = new Activity("Hello","Welcome","+);	  
+	 Source source= new Source();
+	try{
+	 	if(!source.validate(activity)){
+			throw new OperatorException("Invalid parameters");
+	 	}
+	 	
+		String result=source.doOperation(activity);
+		System.out.println(result);
+		
+	}catch(OperatorException e){
+		e.printStackTrace();
+	}	
+   
+   } 
+
+ public boolean validate(Activity activity)  {
+  
+    /*
+	if string1 or string2 or operator are null, throw NullPointerException and return false, also
+        if operator is other than + or - , throw OperatorException and return false
+        if no exception, return true
+    */
+    
+  }
+
+
+
+ public String doOperation(Activity activity){
+
+	/* if operator  is + , returns concatenated string of string1 and string2.
+	If operator is - , returns string1-string2 i.e removing the characters in string1 
+	that are present in string2
+	*/
+
+ }
+
+
+ 
+}
