@@ -1,0 +1,36 @@
+
+Course:=
+=====================
+Create table course(cid int primary key,name varchar(20),duration int);
+
+Insert into course values(1,'java',3),(2,'oracle',2),(3,'jee',4),(4,'python',4),(5,'angular',2);
+
+Student:
+======================
+Create  table student(sid int primary key, sname varchar(20), email varchar(20),cid int references course(cid));
+
+Insert into student values(101,'ram','ram@gmail.com',3);
+Insert into student values(102,'ravi','ram@gmail.com',2);
+Insert into student values(103,'raj','ram@gmail.com',3);
+Insert into student values(104,'sri','ram@gmail.com',2);
+Insert into student values(105,'amith','ram@gmail.com',1);
+Insert into student values(106,'smith','ram@gmail.com',1);
+Insert into student values(107,'john','ram@gmail.com',null);
+Insert into student values(108,'bindu','ram@gmail.com',null);
+
+Inner join
+=================
+select  s.sid,s.sname,s.email,c.cid,c.name,c.duration from student s join course c on s.cid=c.cid;
+
+left outer join
+====================
+select  s.sid,s.sname,s.email,c.cid,c.name,c.duration from student s left outer join course c on s.cid=c.cid;
+right outer join
+=======================
+select  s.sid,s.sname,s.email,c.cid,c.name,c.duration from student s right outer join course c on s.cid=c.cid;
+
+full outer join
+========================
+select  s.sid,s.sname,s.email,c.cid,c.name,c.duration from student s left join course c on s.cid=c.cid
+union 
+select  s.sid,s.sname,s.email,c.cid,c.name,c.duration from student s right join course c on s.cid=c.cid;

@@ -1,0 +1,10 @@
+CREATE TABLE employee(employee_id 
+INT PRIMARY KEY, employee_name VARCHAR(50), manager_id INT);
+
+INSERT INTO employee VALUES  (1, 'Zaid', 3),  (2, 'Rahul', 3),  (3, 'Raman', 4),  
+(4, 'Kamran', NULL),  (5, 'Farhan', 4);
+
+SELECT e.employee_name AS employee,
+m.employee_name AS manager FROM 
+employee AS e JOIN employee 
+AS m ON e.manager_id = m.employee_id;
