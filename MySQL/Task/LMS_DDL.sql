@@ -1,0 +1,63 @@
+CREATE DATABASE lms_db;
+USE lms_db;
+Create table LMS_MEMBERS
+(
+	MEMBER_ID Varchar(10),
+	MEMBER_NAME Varchar(30) NOT NULL,
+	CITY Varchar(20),
+	DATE_REGISTER Date NOT NULL,
+	DATE_EXPIRE Date ,
+	MEMBERSHIP_STATUS Varchar(15)NOT NULL,
+	Constraint LMS_cts1 PRIMARY KEY(MEMBER_ID)
+);
+
+Create table LMS_SUPPLIERS_DETAILS
+(
+	SUPPLIER_ID Varchar(3),
+	SUPPLIER_NAME Varchar(30) NOT NULL,
+	ADDRESS	Varchar(50),
+	CONTACT bigint(10) NOT NULL,
+	EMAIL Varchar(15) NOT NULL,
+	Constraint LMS_cts2 PRIMARY KEY(SUPPLIER_ID)
+);
+
+Create table LMS_FINE_DETAILS
+(
+	FINE_RANGE Varchar(3),
+	FINE_AMOUNT decimal(10,2) NOT NULL,
+	Constraint LMS_cts3 PRIMARY KEY(FINE_RANGE)
+);
+
+
+Create table LMS_BOOK_DETAILS
+(
+	BOOK_CODE Varchar(10),	
+	BOOK_TITLE Varchar(50) NOT NULL,
+	CATEGORY Varchar(15) NOT NULL,
+	AUTHOR Varchar(30) NOT NULL,
+	PUBLICATION Varchar(30),
+	PUBLISH_DATE Date,
+	BOOK_EDITION int(2),
+	PRICE decimal(8,2) NOT NULL,	
+	RACK_NUM Varchar(3),
+	DATE_ARRIVAL Date NOT NULL, 		
+	SUPPLIER_ID Varchar(3) NOT NULL,
+	Constraint LMS_cts4 PRIMARY KEY(BOOK_CODE), 
+        Constraint LMS_cts41 FOREIGN KEY(SUPPLIER_ID) References LMS_SUPPLIERS_DETAILS(SUPPLIER_ID)
+);
+
+
+Create table LMS_BOOK_ISSUE
+(
+	BOOK_ISSUE_NO int,
+	MEMBER_ID Varchar(10) NOT NULL,
+	BOOK_CODE Varchar(10) NOT NULL,
+	DATE_ISSUE Date NOT NULL,
+	DATE_RETURN Date NOT NULL,
+        DATE_RETURNED Date NULL,
+	FINE_RANGE Varchar(3),
+	Constraint LMS_cts5 PRIMARY KEY(BOOK_ISSUE_NO),
+        Constraint LMS_Mem FOREIGN KEY(MEMBER_ID) References LMS_MEMBERS(MEMBER_ID),
+        Constraint LMS_BookDetail FOREIGN KEY(BOOK_CODE) References LMS_BOOK_DETAILS(BOOK_CODE),
+	Constraint LMS_FineDetail FOREIGN KEY(FINE_RANGE) References LMS_FINE_DETAILS(FINE_RANGE)
+);
