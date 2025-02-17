@@ -1,0 +1,94 @@
+create database lms;
+use lms;
+drop database lms1;
+
+https://www.mycompiler.io/new/mysql
+DDL:
+Create table
+alter table
+drop table tname;
+truncate table tname;
+
+DML:
+insert 
+insert into bookinfo5 values(6,'Webservices',50,999,2);
+insert into bookinfo5 values(7,'SOAPWebservices',null,null,null);
+insert into bookinfo5(bid,title)values (8,'REST Webservices');
+update
+
+update tablename set col1=val1,col2=val2... where condition;
+
+delete
+
+delete from table where condition;
+
+DCL:
+Grant
+Revoke
+
+TCL:
+savepoint
+rollback
+commit
+
+
+
+
+create table bookinfo(id int primary key,title varchar(20),qty int, price int);
+
+desc bookinfo;
+
+create table bookinfo5 as select * from bookinfo4;
+create table bookinfo5 as select  id,title from bookinfo4;
+
+
+alter table bookinfo add column (pname varchar(20));
+alter table bookinfo drop column pname;
+alter table bookinfo modify  qty int(5);
+alter table bookinfo  rename column qty to quantity;
+
+insert into bookinfo values(101,'java',90,1000);
+insert into bookinfo values(102,null,900,5000),(103,'python',20,500),(104,'spring',null,5000);
+
+
+select * from bookinfo;
+
+constraints:(RDBMS)
+Primary key  - not null, unique , per table 1 pk
+forignKey - references table(colname);
+Not null
+unique
+check
+
+create table bookinfo3(id int primary key ,title varchar(20) unique /not null,qty int check( qty  between 100 and 300), price int);
+
+
+create table bookinfo4(bid int primary key,title varchar(20),qty int, price int,sid int references supplierinfo(sid));
+insert into bookinfo4 values(1,'java',30,40,2),(2,'spring',34,23,2),(3,'rest',33,44,1),(4,'microsrevices',23,12,1),(5,'microsrevices5',23,12,1);
+select * from bookinfo4;
+create table supplierinfo(sid int primary key,sname varchar(20),email varchar(20));
+insert into supplierinfo values(100,'Ram','ram@gmail.com'),(200,'Kiran','kiran@gmail.com');
+select * from supplierinfo;
+
+
+
+update bookinfo5 set qty=265,price=255 where bid=15;
+select * from bookinfo5 order by qty,price;
+select  distinct title from bookinfo5;
+select * from bookinfo5 where not qty=40;
+select * from bookinfo5 where not qty=40 and price=23;
+select * from bookinfo5 where qty=40 or qty<100;
+select * from bookinfo5 where price not in ( 12,999);
+select * from bookinfo5 where price not between 40 and 50;
+select * from bookinfo5 where title like  'm%';
+select * from bookinfo5 where title like  'j%a';
+select title,length(title),upper(title)  from bookinfo5;
+
+insert into bookinfo5 values(9,'java',50,999,2);
+
+insert into bookinfo5 values(8,'SOAPWebservices',null,null,null);
+insert into bookinfo5(bid,title)values (8,'REST Webservices');
+update bookinfo5 set qty=40,price=400  where not bid=7 ;
+delete from bookinfo5 where bid>=6;
+update bookinfo5 set qty=40;
+truncate table bookinfo7;
