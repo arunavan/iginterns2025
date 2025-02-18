@@ -93,11 +93,14 @@ Triggers:
 =================
 DELIMITER $$
 CREATE TRIGGER BeforeSalaryUpdate
-BEFORE UPDATE ON employees
+BEFORE/after  insert/delete/UPDATE ON emp
 FOR EACH ROW
 BEGIN
+
+
     INSERT INTO salary_log(employee_id, old_salary, new_salary, change_date)
     VALUES (OLD.id, OLD.salary, NEW.salary, NOW());
+
 END $$
 DELIMITER ;
 
@@ -116,3 +119,17 @@ END $$
 DELIMITER ;
 
 SELECT CalculateBonus(5000);
+
+
+create index titleindex on bookinfo5(title);
+DELIMITER $$
+CREATE PROCEDURE getBooks2(in id int,out currentTime1 DATETIME,out currentTime2 DATETIME)
+BEGIN
+set currentTime1=now();
+select * from bookinfo5 where bid=id;
+set currentTime2=now();
+END $$
+DELIMITER ;
+call getBooks2(20,@t1,@t2);
+select @t1,@t2;
+
