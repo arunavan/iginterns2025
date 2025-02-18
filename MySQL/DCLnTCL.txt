@@ -1,0 +1,37 @@
+
+#DCL  - Data control language
+
+grant select/insert/update/delete /all to user on s1.table1,s2.table2....;
+.....
+revoke select/insert/update/delete/all from user on tabl1,table2..;
+
+
+# TCL
+set autocommit=off;
+select * from account1;
+savepoint a;
+delete from account1 where id=101;
+savepoint b;
+delete from account1 where id=105;
+savepoint c;
+delete from account1 where id=110;
+rollback to a;
+commit;
+
+
+
+create table account3 as select * from account123;
+select * from account3;
+
+set autocommit=off;
+savepoint a;
+delete from account3 where id=104;
+savepoint b;
+delete from account3 where id=111;
+savepoint c;
+delete from account3 where id=110;
+rollback to c;
+rollback to b;
+rollback to a;
+commit;
+
