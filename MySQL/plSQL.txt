@@ -1,0 +1,118 @@
+DELIMITER $$
+CREATE PROCEDURE GetAllEmployees()
+BEGIN
+    SELECT * FROM emp;
+END $$
+DELIMITER ;
+
+CALL GetAllEmployees();
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE GetEmployeeById(IN emp_id INT)
+BEGIN
+    SELECT * FROM emp WHERE id = emp_id;
+END $$
+DELIMITER ;
+
+CALL GetEmployeeById(101);
+
+
+
+DELIMITER $$
+CREATE PROCEDURE GetEmployeeNameById(IN emp_id INT, OUT emp_name VARCHAR(100))
+BEGIN
+    SELECT name INTO emp_name FROM emp WHERE id = emp_id;
+
+END $$
+DELIMITER ;
+
+CALL GetEmployeeNameById(101, @name);
+SELECT @name;
+
+
+DELIMITER $$
+CREATE PROCEDURE PrintNumbers()
+BEGIN
+    DECLARE counter INT DEFAULT 1;
+    
+    WHILE counter <= 5 DO
+        SELECT counter;
+        SET counter = counter + 1;
+    END WHILE;
+END $$
+DELIMITER ;
+CALL PrintNumbers();
+
+
+DELIMITER $$
+CREATE PROCEDURE CheckSalary(IN salary INT, OUT category VARCHAR(20))
+BEGIN
+    IF salary < 3000 THEN
+        SET category = 'Low';
+    ELSEIF salary BETWEEN 3000 AND 7000 THEN
+        SET category = 'Medium';
+    ELSE
+        SET category = 'High';
+    END IF;
+END $$
+DELIMITER ;
+
+CALL CheckSalary(5000, @result);
+SELECT @result;
+
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE FetchEmployeeNames()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE emp_name VARCHAR(100);
+    DECLARE cur CURSOR FOR SELECT name FROM employees;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO emp_name;
+        IF done = 1 THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT emp_name;
+    END LOOP;
+    CLOSE cur;
+END $$
+DELIMITER ;
+
+CALL FetchEmployeeNames();
+
+
+Triggers:
+=================
+DELIMITER $$
+CREATE TRIGGER BeforeSalaryUpdate
+BEFORE UPDATE ON employees
+FOR EACH ROW
+BEGIN
+    INSERT INTO salary_log(employee_id, old_salary, new_salary, change_date)
+    VALUES (OLD.id, OLD.salary, NEW.salary, NOW());
+END $$
+DELIMITER ;
+
+
+
+Function:
+=================
+DELIMITER $$
+CREATE FUNCTION CalculateBonus(salary DECIMAL(10,2)) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE bonus DECIMAL(10,2);
+    SET bonus = salary * 0.1;
+    RETURN bonus;
+END $$
+DELIMITER ;
+
+SELECT CalculateBonus(5000);
