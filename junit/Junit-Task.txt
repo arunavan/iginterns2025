@@ -1,0 +1,39 @@
+package com.ig;
+
+public class VoterValidator {
+	public boolean validateVoterAge(int age) throws Exception {
+		if(age<0)
+			throw new Exception("Invalid age");
+		if(age >= 18) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+}
+//We will be learning the creation of JUnit test cases using the above-given method. It accepts an integer value, age. If the age is less than 0, the method throws an exception 
+
+
+Write testcase to use @ParameterizedTest, assertThrows()
+==============================================
+
+package com.ig;
+
+
+class VoterValidatorTest {
+
+	@Test
+public	void testValidateVoterAge() throws Exception{
+		    
+		    Assertions.assertEquals("Invalid age", exception.getMessage());
+		  
+	    }
+	
+	@ParameterizedTest
+	@ValueSource(ints = { 19,20,45,78})
+	public void validateVoterAgeTestParameter123(int age) throws Exception {
+		
+		Assertions.assertTrue();
+	}
+}
