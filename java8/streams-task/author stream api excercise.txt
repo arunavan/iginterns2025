@@ -1,0 +1,41 @@
+public class Author{
+	private Long adharCard;
+	private String surname;
+	private String firstname;
+	private String lastname;
+	private LocalDate birthdate;
+	private String gender;
+	private String city;
+	private Long mobile;
+
+}
+
+
+	public interface AuthorService{
+        	//Get the unique surnames in uppercase
+        	public abstract Set<String> getUniqueSurnames(List<Author> authorList);
+       		public abstract List<Author> getAuthorsByCity(List<Author> authorList,String city);
+        	public abstract double femaleAverageAge(List<Author> authorList);
+        	public abstract Long getMobileByAdhar(List<Author> authorList,Long adharCard);
+
+	}
+
+Implement the above interface using Stream API methods
+
+public class AuthorServiceImpl implements AuthorService{
+	
+
+        
+
+
+
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+class Product{
+  Integer id;
+  String name;
+  String type;  /ex dairy,pulses,spices,oils,snacks
+  Double qty;
+  Double price;
+  LocalDate  expiryDate;
+}
+
+class ProductService{
+
+    // list Highest priced product
+
+   //list lowest priced product
+   
+   //list  product that already expired
+ 
+  //list product names list that will expire in next 10 days
+
+  // display count of  products of different types
+
+}
