@@ -1,0 +1,322 @@
+package jpacrud.entities;
+
+import java.io.Serializable;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "books")
+@NamedQueries(@NamedQuery(name = "getAllBooks", query = "SELECT book FROM Book book"))  // for reusability for multiple services if requireds
+public class Book implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	@Id
+	private Integer id;
+	private String title;
+	private String author;
+	private Double price;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", author=" + author
+				+ ", price=" + price + "]";
+	}
+
+}
+
+
+
+
+package jpacrud.dao;
+
+import java.util.List;
+
+import jpacrud.entities.Book;
+
+public interface BookDao {
+
+	public abstract Book getBookById(int id);
+
+	public abstract List<Book> getBookByTitle(String title);
+
+	public abstract Long getBookCount();
+
+	public abstract List<Book> getAuthorBooks(String author);
+
+	public abstract List<Book> getAllBooks();
+	public List<Book> getAllBooksNative();
+
+	public abstract List<Book> getBooksInPriceRange(double low, double high);
+
+}
+
+
+
+
+package jpacrud.dao;
+
+import java.util.List;
+
+import com.insight.jpaapp.JPAUtil;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jpacrud.entities.Book;
+
+public class BookDaoImpl implements BookDao {
+
+	private EntityManager entityManager;
+
+	public BookDaoImpl() {
+		entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
+	}
+
+	
+	@Override
+	public Book getBookById(int id) {
+		Book book = entityManager.find(Book.class, id);
+		return book;
+	}
+
+	
+	@Override
+	public List<Book> getBookByTitle(String title) {
+		String qStr = "SELECT book FROM Book book WHERE book.title LIKE :ptitle";   //JPQL
+		TypedQuery<Book> query = entityManager.createQuery(qStr, Book.class);
+		query.setParameter("ptitle", "%"+title+"%");
+		return query.getResultList();
+	}
+
+
+	@Override
+	public Long getBookCount() {
+		String qStr = "SELECT COUNT(book.id) FROM Book book";   //JPQL
+		TypedQuery<Long> query = entityManager.createQuery(qStr,
+				Long.class);
+		Long count = query.getSingleResult();
+		return count;
+	}
+
+	
+	@Override
+	public List<Book> getAuthorBooks(String author) {
+		String qStr = "SELECT book FROM Book book WHERE book.author=:pAuthor";   //JPQL
+		TypedQuery<Book> query = entityManager.createQuery(qStr, Book.class);
+		query.setParameter("pAuthor", author);
+		List<Book> bookList = query.getResultList();
+		return bookList;
+	}
+
+	
+	@Override
+	public List<Book> getAllBooks() {
+		Query query = entityManager.createNamedQuery("getAllBooks");   //NamedQuery
+		@SuppressWarnings("unchecked")
+		List<Book> bookList = query.getResultList();
+		return bookList;
+	}
+	
+	@Override
+	public List<Book> getAllBooksNative() {
+		 // Native SQL Query
+    String sql = "SELECT * FROM books where price<:price";
+    Query nativeQuery = entityManager.createNativeQuery(sql, Book.class);
+    nativeQuery.setParameter("price", 100);
+    List<Book> books = nativeQuery.getResultList();
+    return books;
+	}
+	
+	@Override
+	public List<Book> getBooksInPriceRange(double low,double high) {
+		String qStr = "SELECT book FROM Book book WHERE book.price between :low and :high";  //JPQL
+		TypedQuery<Book> query = entityManager.createQuery(qStr, Book.class);
+		query.setParameter("low", low);
+		query.setParameter("high", high);
+		List<Book> bookList = query.getResultList();
+		return bookList;
+	}
+
+}
+
+
+
+
+package jpacrud.service;
+
+import java.util.List;
+
+import jpacrud.entities.Book;
+
+public interface BookService {
+
+	public abstract Book getBookById(int id);
+
+	public abstract List<Book> getBookByTitle(String title);
+
+	public abstract Long getBookCount();
+
+	public abstract List<Book> getAuthorBooks(String author);
+
+	public abstract List<Book> getAllBooks();
+	
+	public abstract List<Book> getAllBooksNative();
+	public abstract List<Book> getBooksInPriceRange(double low, double high);
+
+}
+
+
+package jpacrud.service;
+
+import java.util.List;
+
+import jpacrud.dao.BookDao;
+import jpacrud.dao.BookDaoImpl;
+import jpacrud.entities.Book;
+
+public class BookServiceImpl implements BookService {
+
+	private BookDao dao;
+
+	public BookServiceImpl() {
+		dao = new BookDaoImpl();
+	}
+
+	@Override
+	public Book getBookById(int id) {
+		return dao.getBookById(id);
+	}
+
+	@Override
+	public List<Book> getBookByTitle(String title) {
+		return dao.getBookByTitle(title);
+	}
+
+	@Override
+	public Long getBookCount() {
+		return dao.getBookCount();
+	}
+
+	@Override
+	public List<Book> getAuthorBooks(String author) {
+		return dao.getAuthorBooks(author);
+	}
+
+	@Override
+	public List<Book> getAllBooks() {
+		return dao.getAllBooks();
+	}
+	@Override
+	public  List<Book> getAllBooksNative(){
+		return dao.getAllBooksNative();
+	}
+	@Override
+	public List<Book> getBooksInPriceRange(double low, double high){
+		return dao.getBooksInPriceRange(low, high);
+	}
+}
+
+
+
+
+package jpacrud.client;
+
+import jpacrud.entities.Book;
+import jpacrud.service.BookService;
+import jpacrud.service.BookServiceImpl;
+
+public class Client {  //JPQL examples
+
+	public static void main(String[] args) {
+
+		BookService service = new BookServiceImpl();
+		
+		
+		System.out.println("************Listing total number of books*************");
+		System.out.println("Total books:"+service.getBookCount());
+		
+		System.out.println("************Listing book with id 1*************");
+		System.out.println("Boo with ID 1:"+service.getBookById(1));
+		
+		System.out.println("************Listing All books JPQL*************");
+		for(Book book:service.getAllBooks()) {
+			System.out.println(book);
+		}
+		
+		System.out.println("************Listing All books with native query*************");
+		for(Book book:service.getAllBooksNative()) {
+			System.out.println(book);
+		}
+		
+		System.out.println("************Listing book written by Danny Coward*************");
+		for(Book book:service.getAuthorBooks("Danny Coward") ) {
+			System.out.println(book);
+		}
+		
+		System.out.println("************Listing book on Android*************");
+		for(Book book:service.getBookByTitle("Android")) {
+			System.out.println(book);
+		}
+		
+		
+		
+		System.out.println("************Listing All books between 500 and 600*************");
+		for(Book book:service.getBooksInPriceRange(500, 600) ) {
+			System.out.println(book);
+		}
+		
+		
+		
+		
+
+	}
+}
+
+
+/*
+insert into books values(1,'Amith',900,'java');
+insert into books values(2,'Bindu',90,'Android');
+insert into books values(3,'Danny Coward',190,'Android');
+insert into books values(4,'John',550,'Python');
+
+
+*/
+
+
+
