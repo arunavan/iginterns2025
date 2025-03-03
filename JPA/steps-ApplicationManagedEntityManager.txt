@@ -1,0 +1,176 @@
+src/main/resources/META-INF/persistence.xml
+=======================================
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="EM">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>dto.Student</class>
+        <properties>
+        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ig"/>
+        <property name="javax.persistence.jdbc.user" value="root"/>
+        <property name="javax.persistence.jdbc.password" value="root"/>
+        <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>
+
+
+
+
+
+pom.xml
+=============================
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.insight</groupId>
+	<artifactId>jpaapp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>jpaapp</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+
+	<dependencies>
+		<!-- JPA API -->
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.2.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.6.14.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+		</dependency>
+	</dependencies>
+</project>
+
+
+User
+==========
+package com.insight.jpaapp.model;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "igusers")
+public class User {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    public User() {}
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}
+
+
+package com.insight.jpaapp;
+
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+public class JPAUtil {
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("EM");
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return emf;
+    }
+
+    public static void close() {
+        emf.close();
+    }
+}
+
+
+
+
+package com.insight.jpaapp;
+
+import com.insight.jpaapp.model.User;
+
+import jakarta.persistence.EntityManager;
+
+public class App {
+    public static void main(String[] args) {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+
+        // Create (Insert)
+        User newUser = new User("John Doe");
+        em.getTransaction().begin();
+        em.persist(newUser);
+        em.getTransaction().commit();
+        System.out.println("User Saved: " + newUser);
+
+        // Read (Find)
+        User foundUser = em.find(User.class, newUser.getId());
+        System.out.println("User Found: " + foundUser);
+
+        // Update
+        em.getTransaction().begin();
+        foundUser.setName("John Updated");
+        em.getTransaction().commit();
+        System.out.println("User Updated: " + foundUser);
+
+        // Delete
+        em.getTransaction().begin();
+        em.remove(foundUser);
+        em.getTransaction().commit();
+        System.out.println("User Deleted");
+
+        // Close EntityManager
+        em.close();
+        JPAUtil.close();
+    }
+}
+
