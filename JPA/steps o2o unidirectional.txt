@@ -1,0 +1,134 @@
+package com.insight.o2o;
+import java.io.Serializable;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="studento2ouni")
+public class Student implements Serializable {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int studentId;
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	private String name;
+	
+	@OneToOne(cascade=CascadeType.ALL) //fetch=FetchType.EAGER
+	@JoinColumn(name="address_id")
+	private Address address;
+	
+	public int getStudentId() {
+		return studentId;
+	}
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+
+
+
+package com.insight.o2o;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="addresso2ouni")
+public class Address  {
+	public Address() {}
+
+	@Id
+	@Column(name="ADDRESS_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int addressId;
+	@Column(name="ADDRESS_STREET")
+	private String street;
+	@Column(name="ADDRESS_CITY")
+	private String city;
+	@Column(name="ADDRESS_STATE")
+	private String state;
+	@Column(name="ADDRESS_ZIPCODE")
+	private String zipCode;
+	
+	public int getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+	
+	
+}
+
+
+
+
+package com.insight.o2o;
+import com.insight.jpaapp.JPAUtil;
+import jakarta.persistence.EntityManager;
+public class Client {
+	public static void main(String[] args) {
+	    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Student student = new Student();
+		student.setName("Deepak Patil");
+		Address homeAddress = new Address();
+		homeAddress.setStreet("MG Road");
+		homeAddress.setCity("Pune");
+		homeAddress.setState("Maharashtra");
+		homeAddress.setZipCode("411 017");
+		//inject address into student
+		student.setAddress(homeAddress);
+		
+		//persist only student, no need to persist Address explicitly
+		em.persist(student);
+		em.getTransaction().commit();
+		
+		System.out.println("Added one student with address to database.");
+		em.close();
+		
+	}
+}
