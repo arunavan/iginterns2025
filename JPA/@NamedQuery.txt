@@ -1,0 +1,45 @@
+@NamedQuery:
+====================
+@NamedQueries({
+       @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u ORDER BY u.fullname")
+    
+})
+
+
+@NamedQuery with param:
+============================
+@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+
+
+String queryName = "User.findByEmail";
+String email = "xxx@gmail.com";
+Query query = entityManager.createNamedQuery(queryName);
+query.setParameter("email", email);
+ User user = (User) query.getSingleResult();
+
+
+@NamedQuery with placeholder(? )
+==========================
+
+@NamedQuery(name = "User.checkLogin", query = "SELECT u FROM User u WHERE u.email = ?1 AND password = ?2")
+
+
+String queryName = "User.checkLogin";
+String email = "tom@gmail.com";
+String pass = "tomsecret1";
+Query query = entityManager.createNamedQuery(queryName);
+query.setParameter(1, email);
+query.setParameter(2, pass);
+User user = (User) query.getSingleResult();
+
+
+
+
+List of queries:
+==========================
+@NamedQueries({
+      @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u ORDER BY u.fullname"),
+    @NamedQuery(name = "User.count", query = "SELECT COUNT(*) FROM User u"),
+    @NamedQuery(name = "User.removeAll", query = "DELETE FROM User u")
+     
+})
