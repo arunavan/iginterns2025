@@ -1,0 +1,158 @@
+package com.insight.o2m;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="igempo2m1")
+public class Employee {
+	@Id
+	private int id;
+	private String name;
+	private double salary;
+	@ManyToOne
+	@JoinColumn(name="did")
+	private Department department;
+
+	
+	public Employee() {}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+}
+
+
+
+
+
+
+package com.insight.o2m;
+import java.util.HashSet;
+import java.util.Set;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+@Entity
+@Table(name = "igdepto2m1")
+public class Department {
+	@Id
+	private int id;
+	private String name;
+
+	@OneToMany(mappedBy="department",cascade=CascadeType.ALL)
+	private Set<Employee> employees = new HashSet<>();		//Initialization required to avoid NullPointerException
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(Set<Employee> employees) {
+		this.employees = employees;
+	}
+	
+	//the method below will add employee to department 
+	//also serves the purpose to avoid cyclic references. 
+	public void addEmployee(Employee employee) {
+		employee.setDepartment(this);			//this will avoid nested cascade
+		this.getEmployees().add(employee);
+	}
+
+}
+
+
+
+
+
+
+package com.insight.o2m;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+public class Client {
+
+	public static void main(String[] args) {
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("EM");
+		EntityManager em = factory.createEntityManager();
+		em.getTransaction().begin();
+		
+		//create a new department
+		Department department = new Department();
+		department.setId(10);
+		department.setName("Sales");
+		
+		//create two instances of employees
+		Employee e1 = new Employee();
+		e1.setId(1001);
+		e1.setName("Priya Sharma");
+		e1.setSalary(4500);
+		
+		Employee e2 = new Employee();
+		e2.setId(1002);
+		e2.setName("Dinesh Kumar");
+		e2.setSalary(5500);
+		
+		//add both employees to department
+		department.addEmployee(e1);
+		department.addEmployee(e2);
+		
+		//save department and its employees using entity manager
+		em.persist(department);
+		
+		System.out.println("Added department along with two employees to database.");
+		
+		em.getTransaction().commit();
+		em.close();
+		factory.close();
+	}
+}
+
