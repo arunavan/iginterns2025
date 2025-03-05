@@ -1,0 +1,125 @@
+<dependencies>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.2.0.RELEASE</version>
+		</dependency>
+		
+	<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.0.RELEASE</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+
+
+
+===beans.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+		default-lazy-init="true">
+
+<bean id="o" class="com.var.springapp1.beans.Order" init-method="start" destroy-method="stop"  scope="prototype">
+	</bean>
+
+
+<bean id="c" class="com.var.springapp1.beans.Customer">
+	</bean>
+</beans>
+
+
+
+package com.var.springapp1.beans;
+public class Customer {
+	String name;
+	String email;
+	public Customer(){
+		
+	}
+	public Customer(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", email=" + email + "]";
+	}
+}
+
+
+
+
+
+package com.var.springapp1.beans;
+
+public class Order {
+	
+	Integer id;
+	Double amount;
+	public Order(){
+		
+	}
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", amount=" + amount + "]";
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Double getAmount() {
+		return amount;
+	}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+	public void start() {
+		System.out.println(" bean ready to use ,created ");
+	}
+	public void stop() {
+		System.out.println(" bean ready to stop ");
+		
+	}
+
+}
+
+
+package com.var.springapp1;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+import com.var.springapp1.beans.Customer;
+import com.var.springapp1.beans.Order;
+public class App 
+{
+    public static void main( String[] args )
+    {   //IOC container   - create beans, destroying, lifecycle, scope
+    	
+    //	BeanFactory ioc=new XMLBeanFactory(new FileSystemResource("beans.xml"));
+    	ClassPathXmlApplicationContext ioc = new ClassPathXmlApplicationContext(
+				"beans.xml");
+      	//object creation,destruction ,lifecycle, scope 
+      	Order o=(Order)ioc.getBean("o");
+    	Order o1=(Order)ioc.getBean("o");
+      	Order o2=(Order)ioc.getBean("o");
+    	System.out.println(o.hashCode() +"  "+o1.hashCode()  +"  "+ o2.hashCode());
+    	o.setAmount(9999.99);
+    	o.setId(102);
+    	System.out.println(o.getId()+"  "+o.getAmount());
+    	Customer c=(Customer)ioc.getBean("c");
+    	System.out.println(c);
+      	ioc.close();
+      }
+}
