@@ -1,0 +1,60 @@
+
+============== config class in place of beans.xml
+
+package com.var.springapp1.beans;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+@Configuration
+public class SpringConfig {
+	@Bean
+	//@Scope("prototype")
+	public Customer customer() {
+		return new Customer();
+		//return new Customer("ram","ram@gmail.com");
+	}
+}
+
+=====================bean 
+package com.var.springapp1.beans;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+public class Customer implements InitializingBean,DisposableBean{
+	public String name;
+	public String email;
+	public Customer(){
+	}
+	public Customer(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", email=" + email + "]";
+	}
+	public void afterPropertiesSet() {
+		System.out.println(" initialization of bean done");
+	}
+	public void destroy() {
+		System.out.println(" destroying bean");
+	}
+}
+
+
+========================Test
+
+package com.var.springapp1.beans;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.var.javaconfig.components.Bill;
+public class AppTest {
+	public static void main(String[] args) {
+	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        Customer c=(Customer)context.getBean(Customer.class);
+        System.out.println(c   +"  "+c.hashCode());
+        Customer c1=(Customer)context.getBean(Customer.class);
+        System.out.println(c1  +"   "+c1.hashCode());
+        context.close();
+	}
+}
+
+
