@@ -1,0 +1,84 @@
+package com.var.javaconfig.components;
+import org.springframework.stereotype.Component;
+@Component
+public class Bill {
+	private Integer id;
+	private String type;
+	public Bill(){	}
+    
+	public Bill(Integer id, String type) {
+		super();
+		this.id = id;
+		this.type = type;	}
+	public Integer getId() {		return id;	}
+	public void setId(Integer id) {		this.id = id;	}
+	public String getType() {		return type;	}
+	public void setType(String type) {		this.type = type;	}
+	@Override
+	public String toString() {
+		return "Bill [id=" + id + ", type=" + type + "]";
+	}
+}
+
+package com.var.javaconfig.components;
+import org.springframework.stereotype.Component;
+@Component
+public class Customer {
+	String name;
+	String email;
+	public Customer(){	}
+	public Customer(String name, String email) {
+		this.name = name;
+		this.email = email;	}
+	public String getName() {		return name;	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;	}
+	public void setEmail(String email) {
+		this.email = email;	}
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", email=" + email + "]";
+	}
+}
+
+
+
+package com.var.javaconfig;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan("com.var.javaconfig.components")
+public class SpringConfig1 {
+
+}
+
+
+
+package com.var.javaconfig;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.var.javaconfig.components.Bill;
+
+import com.var.javaconfig.components.Customer;
+public class BillTest1 {
+
+	public static void main(String[] args) {
+		
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig1.class);
+	     Bill bill=(Bill)context.getBean(Bill.class);
+	     bill.setId(105);
+	     bill.setType("Mobile bill");
+	     System.out.println(bill.getType()+"  "+bill.getId());
+	     
+	    Customer c= (Customer)context.getBean(Customer.class);
+	    c.setEmail("abc@gmail.com");
+	    c.setName("abc");
+	    System.out.println(c);
+	}
+
+}
