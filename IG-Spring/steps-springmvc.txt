@@ -1,0 +1,245 @@
+create new maven project with archetype as     ===>maven-archetype-webapp
+
+
+
+pom.xml
+============================
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ig</groupId>
+	<artifactId>springmvc</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springmvc</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>5.1.0.RELEASE</version>
+		</dependency>
+
+		<!-- JSTL Dependency -->
+		<dependency>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<!-- Servlet Dependency -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- JSP Dependency -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
+===============src/main/java    ---- com.ig.springmvc.config=============
+
+package com.ig.springmvc.onfig;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = { "com.ig.springmvc" }) //controller,model
+public class AppConfig {
+	@Bean
+	public InternalResourceViewResolver resolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setViewClass(JstlView.class);
+		resolver.setPrefix("/WEB-INF/views/");
+		resolver.setSuffix(".jsp");
+		return resolver;
+	}
+
+}
+
+package com.ig.springmvc.onfig;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+ 	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		return null;
+	}
+ 	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		return new Class[] { AppConfig.class };
+	}
+ 	@Override
+	protected String[] getServletMappings() {
+		return new String[] { "/" };
+	}
+ }
+
+
+
+======Model ==========src/main/java  -  com.ig.springmvc.model  =======================
+package com.ig.springmvc.model;
+
+public class HelloWorld {
+	private String message;
+	private String dateTime;
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+}
+
+====controller=========src/main/java =====com.ig.springmvc.controller 
+package com.ig.springmvc.controller;
+
+import java.time.LocalDateTime;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import com.ig.springmvc.model.HelloWorld;
+@Controller   										//http://localhost:8080/springmvc/helloworld
+public class HelloWorldController {
+	@RequestMapping("/helloworld")
+	public String handler(Model model) {
+		HelloWorld helloWorld = new HelloWorld();
+		helloWorld.setMessage("Welcome to SpringMVC session");
+		helloWorld.setDateTime(LocalDateTime.now().plusHours(1).toString());
+		model.addAttribute("helloWorld", helloWorld);
+		return "helloworld";
+	}
+	
+	@RequestMapping("/home")  				//http://localhost:8080/springmvc/home
+	public String message() {
+		return "home";
+	}
+}
+
+
+
+
+package com.ig.springmvc.controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class ProductController {
+	@RequestMapping("/product")
+	public String message(@RequestParam("id") Integer id) {
+		System.out.println("request param: "+id);
+		return "home";
+	}
+	
+	@RequestMapping("/product1/{id1}")
+	public String message1(@PathVariable("id1") Integer id) {
+		System.out.println("path param :"+id);
+		return "home";
+	}
+	@GetMapping("/read")
+	public String get() {
+		System.out.println(" get- for read()");
+		return "home";
+	}
+	@PostMapping("/add")
+	public String add() {
+		System.out.println(" post- for add()");
+		return "home";
+	}
+	@PutMapping("/update")
+	public String update() {
+		System.out.println(" put- for update()");
+		return "home";
+	}
+	@DeleteMapping("/delete")
+	public String delete() {
+		System.out.println(" delete- for delete()");
+		return "home";
+	}
+	
+	
+}
+
+
+
+ src/main/webapp/WEB-INF/views 
+ =========================
+in above folder   create below 2 jsp files
+
+
+============helloworld.jsp===========
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Spring 5 MVC - Hello World Example </title>
+</head>
+<body>
+	<h2>${helloWorld.message}</h2>
+	<h4>Server date time is : ${helloWorld.dateTime}</h4>
+</body>
+</html>
+
+
+========home.jsp=============
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+
+<body>
+	   <h1> Healthcare Application : Homepage </h1>
+</body>
+</html>
