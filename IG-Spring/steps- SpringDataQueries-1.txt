@@ -1,0 +1,348 @@
+==========================repository layer
+package com.igquery.repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import com.igquery.entity.Customer;
+import jakarta.transaction.Transactional;
+public interface CustomerRepository extends CrudRepository<Customer, Integer> {
+	@Query("SELECT c.name FROM Customer c WHERE c.emailId = :emailId")
+	String findNameByEmailId(@Param("emailId") String emailId);
+
+	@Query("UPDATE Customer c SET c.emailId = :emailId WHERE c.customerId = :customerId")
+	@Modifying
+	@Transactional
+	Integer updateCustomerEmailId(@Param("emailId") String updateCustomerByEmailId, @Param("customerId") Integer customerId);
+
+	@Query("DELETE FROM Customer c WHERE c.emailId = :emailId")
+	@Modifying
+	@Transactional
+	Integer deleteCustomerByEmailId(@Param("emailId") String emailId);
+}
+================================service layer
+package com.igquery.service;
+import java.time.LocalDate;
+import java.util.List;
+import com.igquery.dto.CustomerDTO;
+import com.igquery.exception.CustomerException;
+public interface CustomerService {
+	String findNameByEmailId(String emailId);
+	void updateCustomerEmailId(String newEmailId, Integer customerId) throws CustomerException;
+	void deleteCustomerByEmailId(String emailId) throws CustomerException;
+}
+
+
+
+package com.igquery.service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.igquery.entity.Customer;
+import com.igquery.exception.CustomerException;
+import com.igquery.repository.CustomerRepository;
+
+@Service(value = "customerService")
+public class CustomerServiceImpl implements CustomerService {
+	@Autowired
+	private CustomerRepository customerRepository;
+	@Override
+	public String findNameByEmailId(String emailId) {
+		return customerRepository.findNameByEmailId(emailId);
+	}
+	@Override
+	public void updateCustomerEmailId(String newEmailId, Integer customerId) throws CustomerException {
+		Optional<Customer> optional = customerRepository.findById(customerId);
+
+		optional.orElseThrow(() -> new CustomerException("Service.CUSTOMER_UNAVAILABLE"));
+		customerRepository.updateCustomerEmailId(newEmailId, customerId);
+		}
+	@Override
+	public void deleteCustomerByEmailId(String emailId) throws CustomerException {
+		// Optional<CustomerEntity> customer = customerRespository.fi
+		Integer count = customerRepository.deleteCustomerByEmailId(emailId);
+		if (count == 0)
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+	}
+}
+
+
+
+
+
+
+======================
+package com.igquery.entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity
+public class Customer {
+
+	@Id
+	private Integer customerId;
+	private String emailId;
+	private String name;
+
+	private LocalDate dateOfBirth;
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getCustomerId() == null) ? 0 : this.getCustomerId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		if (this.getCustomerId() == null) {
+			if (other.getCustomerId() != null)
+				return false;
+		} 
+		else if (!this.getCustomerId().equals(other.getCustomerId()))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerEntity [customerId=" + customerId + ", emailId=" + emailId + ", name=" + name + ", dateOfBirth="
+				+ dateOfBirth + "]";
+	}
+
+}
+=======================
+
+package com.igquery.dto;
+
+import java.time.LocalDate;
+
+
+public class CustomerDTO {
+
+	private Integer customerId;
+	private String emailId;
+	private String name;
+	private LocalDate dateOfBirth;
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerDTO [customerId=" + customerId + ", emailId=" + emailId + ", name=" + name + ", dateOfBirth="
+				+ dateOfBirth + "]";
+	}
+
+}
+
+===========================================
+
+package com.igquery;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+
+import com.igquery.dto.CustomerDTO;
+import com.igquery.service.CustomerServiceImpl;
+@SpringBootApplication
+public class DemoSpringDataQueryCreation001Application   implements CommandLineRunner {
+	private static final Log LOGGER = LogFactory.getLog(DemoSpringDataQueryCreation001Application.class);
+	
+	@Autowired
+	CustomerServiceImpl customerService;
+	public static void main(String[] args) {
+		SpringApplication.run(DemoSpringDataQueryCreation001Application.class, args);
+
+	}
+	package com.igquery;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+
+import com.igquery.dto.CustomerDTO;
+import com.igquery.service.CustomerServiceImpl;
+
+
+
+@SpringBootApplication
+public class DemoSpringDataQueryCreation001Application   implements CommandLineRunner {
+	
+	private static final Log LOGGER = LogFactory.getLog(DemoSpringDataQueryCreation001Application.class);
+	
+	@Autowired
+	CustomerServiceImpl customerService;
+
+	
+	
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoSpringDataQueryCreation001Application.class, args);
+
+	}
+
+	public void run(String... args) throws Exception {
+		
+		
+
+			//findNameByEmailId();
+			//updateCustomerByEmailId();
+			deleteCustomerByEmailId();
+
+		}
+
+		public void findNameByEmailId() {
+			try {
+				String name = customerService.findNameByEmailId("ram@gmail.com");
+
+				LOGGER.info("Customer name : " + name);
+
+			} catch (Exception e) {
+
+				if (e.getMessage() != null)
+					LOGGER.info("Something went wrong");
+			}
+		}
+
+		public void updateCustomerByEmailId() {
+
+			try {
+				customerService.updateCustomerEmailId("ram@gmail.com", 3);
+				LOGGER.info("UPDATE_SUCCESS");
+			} catch (Exception e) {
+
+				if (e.getMessage() != null)
+					LOGGER.info("Something went wrong");			}
+		}
+
+		public void deleteCustomerByEmailId() {
+
+			try {
+				customerService.deleteCustomerByEmailId("ram@gmail.com");
+				LOGGER.info("DELETE_SUCCESS");
+
+			} catch (Exception e) {
+
+				if (e.getMessage() != null)
+					LOGGER.info("Something went wrong");
+			}
+		//}
+	//}
+
+		
+		
+	}
+}
+
+/*
+insert into customer (customer_id,date_of_birth,email_id,name) values(2,'1999-02-02','raj@gmail.com','raj');
+insert into customer (customer_id,date_of_birth,email_id,name) values(3,'1999-02-02','ram@gmail.com','ram');
+
+*/
+
+
+package com.igquery.exception;
+
+public class CustomerException extends Exception {
+	private static final long serialVersionUID = 1L;
+
+	public CustomerException(String message) {
+		super(message);
+	}
+}
