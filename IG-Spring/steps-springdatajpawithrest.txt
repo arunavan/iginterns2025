@@ -1,0 +1,380 @@
+Spring data-JPA 
+ModelMapper  -> mapping DTO to Entity ,vice versa
+Spring OpenAPI documentation  -> to generate API documentation
+RestTemplate   -> for consuming rest webservice
+
+
+
+
+---------pom.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.var</groupId>
+	<artifactId>springrestjpademo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springrestjpademo</name>
+	<description>Demo project for Spring Boot</description>
+	<url />
+	<licenses>
+		<license />
+	</licenses>
+	<developers>
+		<developer />
+	</developers>
+	<scm>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc6 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.5</version>
+		</dependency>
+		
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+		<!---->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
+
+
+====================application.properties
+
+spring.application.name=springrestjpademo
+server.port=8082
+
+
+#datasource
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url = jdbc:mysql://localhost:3306/ig
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL8Dialect
+
+ # Hibernate ddlauto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.show-sql=true
+
+
+#Swagger-api doc
+springdoc.api-docs.path=/api-docs
+
+
+========================
+package com.var;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+@SpringBootApplication
+public class SpringrestjpademoApplication {
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringrestjpademoApplication.class, args);
+	}
+	@Bean
+	public RestTemplate restTemplate() {
+	return new RestTemplate();
+	}
+}
+
+
+// application.properties
+
+// springdoc.api-docs.path=/api-docs
+
+//URL for swagger 
+// http://localhost:8082/api-docs
+// http://localhost:8082/swagger-ui/index.html
+
+==============================
+package com.var.controller;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.var.dto.ProductDTO;
+import com.var.entity.Product;
+import com.var.service.ProductService;
+@RestController
+public class ProductController {
+	@Autowired
+	ProductService productService;
+	@Autowired
+	ModelMapper modelMapper;
+	@PostMapping("/product") // http://localhost:8082/product
+	public String  addProduct(@RequestBody ProductDTO productDto)
+	{   Product product=modelMapper.map(productDto, Product.class);
+		productService.addProduct(product);
+		return "Added";
+	}
+	
+	@PostMapping("/addproduct")
+	public ResponseEntity<String>  addProduct1(@RequestBody ProductDTO productDto)
+	{   Product product=modelMapper.map(productDto, Product.class);
+		productService.addProduct(product);
+		return new ResponseEntity<>("Created",HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/product/{id}")
+	public ProductDTO getProduct(@PathVariable("id") Integer id) {
+		Product product=productService.getProduct(id);
+		return modelMapper.map(product, ProductDTO.class);
+	}
+	@GetMapping("/product")
+	public List<ProductDTO> getAllProducts() {
+		List<Product> productList= productService.getAllProducts();
+		return productList.stream().map(Product->modelMapper.map(Product,ProductDTO.class)).collect(Collectors.toList());
+		
+	}
+	@PutMapping("/product/{id}")
+	public String updateProduct(@PathVariable("id") Integer id,@RequestBody ProductDTO productDto)  throws Exception{
+		 productService.updateProduct(id,modelMapper.map(productDto, Product.class));
+		 return "updated";
+	}
+	@DeleteMapping("/product/{id}")
+	public String deleteProduct(@PathVariable("id") Integer id) {
+		 productService.deleteProduct(id);
+		 return "deleted";
+	}
+}
+
+=================================
+package com.var.dto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+public class ProductDTO { //productData   product_Data
+	
+	Integer id;
+	
+	String name;// name_of_product
+	public ProductDTO(){}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + "]";
+	}
+	public ProductDTO(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	}
+
+========================================
+package com.var.entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="igproduct")
+public class Product { //productData   product_Data
+	@Id
+	@Column(name="product_id")
+	Integer id;
+	@Column(name="product_name")
+	String name;// name_of_product
+	public Product(){}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + "]";
+	}
+	public Product(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	
+}
+
+=====================================
+package com.var.repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.var.entity.Product;
+
+@Repository  // Repository   -> CrudRepository -> PagingandSortingRepository ->JPARedpositoty
+public interface ProductRepository  extends CrudRepository<Product,Integer>{
+	// save, findById(), findAll,deleteById,...
+
+}
+
+=========================================
+
+package com.var.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.var.entity.Product;
+import com.var.exception.ResourceNotFoundException;
+import com.var.repository.ProductRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class ProductService {
+	@Autowired
+	ProductRepository productRepository;
+	//@Transactional
+	public void addProduct(Product product) {
+		productRepository.save(product);
+	}
+	public List<Product> getAllProducts() {
+		return (List)productRepository.findAll();
+	}
+	public Product getProduct(Integer id) {
+		 
+		return productRepository.findById(id).get();
+	}
+	//@Transactional
+	public void  deleteProduct(Integer id) {
+		
+		 productRepository.deleteById(id);  //commit, rollback
+	}
+	//@Transactional
+	public void  updateProduct(Integer id,Product product) throws Exception {
+		 Product product1=productRepository.findById(id).get();
+		 product1.setName(product.getName());
+	}
+
+}
+
+===================================RestTemplate
+
+package com.var.controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import com.var.dto.ProductDTO;
+import com.var.entity.Product;
+@RestController
+public class ProductClientController {//consumer
+	@Autowired
+	RestTemplate restTemplate;
+	@GetMapping("/client")
+	 public String consume() {
+		ResponseEntity<Product> resource= restTemplate.getForEntity("http://localhost:8082/product/181", Product.class);
+		 return resource.getBody().toString();
+	 }
+
+	
+
+}
+
+
+
