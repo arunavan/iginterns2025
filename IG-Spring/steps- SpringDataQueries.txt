@@ -1,0 +1,645 @@
+==========================repository layer
+
+package com.igquery.repository;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import com.igquery.entity.Customer;
+
+import jakarta.transaction.Transactional;
+
+public interface CustomerRepository extends CrudRepository<Customer, Integer> {
+	Optional<Customer> findByEmailId(String emailId);//findAll
+
+	Optional<Customer> findByEmailIdAndName(String emailId, String name);
+
+	List<Customer> findByEmailIdOrName(String emailId, String name);
+
+	List<Customer> findByDateOfBirthBetween(LocalDate fromDate, LocalDate toDate);
+
+	List<Customer> findByDateOfBirthLessThan(LocalDate dateOfBirth);
+
+	List<Customer> findByDateOfBirthGreaterThan(LocalDate dateOfBirth);
+
+	List<Customer> findByDateOfBirthAfter(LocalDate dateOfBirth);
+
+	List<Customer> findByDateOfBirthBefore(LocalDate dateOfBirth);
+
+	List<Customer> findByEmailIdNull();
+
+	List<Customer> findByNameLike(String pattern);
+
+	List<Customer> findByNameOrderByDateOfBirth(String name);
+
+	List<Customer> findByNameOrderByDateOfBirthDesc(String name);
+
+}
+
+}
+
+
+==============service layer
+package com.igquery.service;
+import java.time.LocalDate;
+import java.util.List;
+import com.igquery.dto.CustomerDTO;
+import com.igquery.exception.CustomerException;
+public interface CustomerService {
+	String findNameByEmailId(String emailId);
+	void updateCustomerEmailId(String newEmailId, Integer customerId) throws CustomerException;
+	void deleteCustomerByEmailId(String emailId) throws CustomerException;
+}
+
+
+
+
+
+
+
+@Service(value = "customerService")
+public class CustomerServiceImpl implements CustomerService {
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	public CustomerDTO findByEmailId(String emailId) throws CustomerException {
+		Optional<Customer> optional = customerRepository.findByEmailId(emailId);
+		Customer customer = optional.orElseThrow(() -> new CustomerException("Service.CUSTOMER_UNAVAILABLE"));
+			
+		CustomerDTO customerDTO = new CustomerDTO();
+		customerDTO.setCustomerId(customer.getCustomerId());
+		customerDTO.setDateOfBirth(customer.getDateOfBirth());
+		customerDTO.setEmailId(customer.getEmailId());
+		customerDTO.setName(customer.getName());
+		return customerDTO;
+		
+	}
+
+	@Override
+	public CustomerDTO findByEmailIdAndName(String emailId, String name) throws CustomerException {
+		Optional<Customer> optional = customerRepository.findByEmailIdAndName(emailId, name);
+		Customer customer = optional.orElseThrow(() -> new CustomerException("Service.CUSTOMER_UNAVAILABLE"));
+		
+		CustomerDTO customerDTO = new CustomerDTO();
+		customerDTO.setCustomerId(customer.getCustomerId());
+		customerDTO.setDateOfBirth(customer.getDateOfBirth());
+		customerDTO.setEmailId(customer.getEmailId());
+		customerDTO.setName(customer.getName());
+		return customerDTO;
+	}
+
+	@Override
+	public List<CustomerDTO> findByEmailIdOrName(String emailId, String name) throws CustomerException {
+		List<Customer> customers = customerRepository.findByEmailIdOrName(emailId, name);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByDateOfBirthBetween(LocalDate fromDate, LocalDate toDate) throws CustomerException {
+		List<Customer> customers = customerRepository.findByDateOfBirthBetween(fromDate, toDate);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByDateOfBirthLessThan(LocalDate dateOfBirth) throws CustomerException {
+		List<Customer> customers = customerRepository.findByDateOfBirthLessThan(dateOfBirth);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByDateOfBirthGreaterThan(LocalDate dateOfBirth) throws CustomerException {
+		List<Customer> customers = customerRepository.findByDateOfBirthGreaterThan(dateOfBirth);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByDateOfBirthAfter(LocalDate dateOfBirth) throws CustomerException {
+		List<Customer> customers = customerRepository.findByDateOfBirthAfter(dateOfBirth);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByDateOfBirthBefore(LocalDate dateOfBirth) throws CustomerException {
+		List<Customer> customers = customerRepository.findByDateOfBirthBefore(dateOfBirth);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByEmailIdNull() throws CustomerException {
+		List<Customer> customers = customerRepository.findByEmailIdNull();
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByNameLike(String pattern) throws CustomerException {
+		List<Customer> customers = customerRepository.findByNameLike(pattern);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByNameOrderByDateOfBirth(String name) throws CustomerException {
+		List<Customer> customers = customerRepository.findByNameOrderByDateOfBirth(name);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+	@Override
+	public List<CustomerDTO> findByNameOrderByDateOfBirthDesc(String name) throws CustomerException {
+		List<Customer> customers = customerRepository.findByNameOrderByDateOfBirthDesc(name);
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		if (customers.isEmpty())
+			throw new CustomerException("Service.CUSTOMER_UNAVAILABLE");
+		customers.forEach(customer -> {
+			CustomerDTO customerDTO = new CustomerDTO();
+			customerDTO.setCustomerId(customer.getCustomerId());
+			customerDTO.setDateOfBirth(customer.getDateOfBirth());
+			customerDTO.setEmailId(customer.getEmailId());
+			customerDTO.setName(customer.getName());
+			customerDTOs.add(customerDTO);
+		});
+		return customerDTOs;
+	}
+
+}
+
+
+======================
+package com.igquery.entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity
+public class Customer {
+
+	@Id
+	private Integer customerId;
+	private String emailId;
+	private String name;
+
+	private LocalDate dateOfBirth;
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getCustomerId() == null) ? 0 : this.getCustomerId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		if (this.getCustomerId() == null) {
+			if (other.getCustomerId() != null)
+				return false;
+		} 
+		else if (!this.getCustomerId().equals(other.getCustomerId()))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerEntity [customerId=" + customerId + ", emailId=" + emailId + ", name=" + name + ", dateOfBirth="
+				+ dateOfBirth + "]";
+	}
+
+}
+=======================
+
+package com.igquery.dto;
+
+import java.time.LocalDate;
+
+
+public class CustomerDTO {
+
+	private Integer customerId;
+	private String emailId;
+	private String name;
+	private LocalDate dateOfBirth;
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerDTO [customerId=" + customerId + ", emailId=" + emailId + ", name=" + name + ", dateOfBirth="
+				+ dateOfBirth + "]";
+	}
+
+}
+
+===========================================
+
+package com.igquery;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+
+import com.igquery.dto.CustomerDTO;
+import com.igquery.service.CustomerServiceImpl;
+@SpringBootApplication
+public class DemoSpringDataQueryCreation001Application   implements CommandLineRunner {
+	private static final Log LOGGER = LogFactory.getLog(DemoSpringDataQueryCreation001Application.class);
+	
+	@Autowired
+	CustomerServiceImpl customerService;
+	public static void main(String[] args) {
+		SpringApplication.run(DemoSpringDataQueryCreation001Application.class, args);
+
+	}
+	public void run(String... args) throws Exception {
+		
+		 findByEmailId();
+		 findByEmailIdAndName();
+		 findByEmailIdOrName();
+		 findByDateOfBirthBetween();
+		 findByDateOfBirthLessThan();
+		 findByDateOfBirthGreaterThan();
+		 findByDateOfBirthAfter();
+		 findByDateOfBirthBefore();
+		 findByEmailIdIsNull();
+		 findByNameLike();
+		 findByNameOrderByDateOfBirth();
+		 findByNameOrderByDateOfBirthDesc();
+}
+
+
+	public void findByEmailId() {
+
+		try {
+
+			CustomerDTO customerDTO = customerService.findByEmailId("ram@gmail.com");
+			LOGGER.info(customerDTO);
+			LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info("Something went wrong");
+		}
+
+	}
+
+	public void findByEmailIdAndName() {
+
+		try {
+
+			CustomerDTO customerDTO = customerService.findByEmailIdAndName("martin@infy.com", "martin");
+
+			LOGGER.info(customerDTO);LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info("Something went wrong");
+		}
+
+	}
+
+	public void findByEmailIdOrName() {
+
+		try {
+
+			List<CustomerDTO> customerDTOs = customerService.findByEmailIdOrName("martin@infy.com", "martin");
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info("Something went wrong");
+		}
+
+	}
+
+	public void findByDateOfBirthBetween() {
+		try {
+			LocalDate fromDate = LocalDate.of(1995, 1, 1);
+			LocalDate toDate = LocalDate.of(2000, 12, 31);
+
+			List<CustomerDTO> customerDTOs = customerService.findByDateOfBirthBetween(fromDate, toDate);
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");
+		}
+	}
+
+	public void findByDateOfBirthLessThan() {
+		try {
+
+			LocalDate dateOfBirth = LocalDate.of(2000, 12, 31);
+
+			List<CustomerDTO> customerDTOs = customerService.findByDateOfBirthLessThan(dateOfBirth);
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");	}
+	}
+
+	public void findByDateOfBirthGreaterThan() {
+		try {
+
+			LocalDate dateOfBirth = LocalDate.of(1995, 12, 31);
+
+			List<CustomerDTO> customerDTOs = customerService.findByDateOfBirthGreaterThan(dateOfBirth);
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");	}
+	}
+
+	public void findByDateOfBirthAfter() {
+		try {
+
+			LocalDate dateOfBirth = LocalDate.of(1995, 12, 31);
+
+			List<CustomerDTO> customerDTOs = customerService.findByDateOfBirthAfter(dateOfBirth);
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");	}
+	}
+
+	public void findByDateOfBirthBefore() {
+		try {
+
+			LocalDate dateOfBirth = LocalDate.of(2000, 12, 31);
+
+			List<CustomerDTO> customerDTOs = customerService.findByDateOfBirthBefore(dateOfBirth);
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");	}
+	}
+
+	public void findByEmailIdIsNull() {
+		try {
+
+			List<CustomerDTO> customerDTOs = customerService.findByEmailIdNull();
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");	}
+	}
+
+	public void findByNameLike() {
+		try {
+
+			List<CustomerDTO> customerDTOs = customerService.findByNameLike("j%");
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info("Something went wrong");
+		}
+	}
+
+	public void findByNameOrderByDateOfBirth() {
+		try {
+			List<CustomerDTO> customerDTOs = customerService.findByNameOrderByDateOfBirth("martin");
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info(
+						"Something went wrong");
+		}
+	}
+
+	void findByNameOrderByDateOfBirthDesc() {
+		try {
+			List<CustomerDTO> customerDTOs = customerService.findByNameOrderByDateOfBirthDesc("martin");
+
+			customerDTOs.forEach(customerDTO -> {
+				LOGGER.info(customerDTO);
+			});LOGGER.info("\n");
+		} catch (Exception e) {
+
+			if (e.getMessage() != null)
+				LOGGER.info("Something went wrong");
+		}
+	}
+  
+		
+
+}
