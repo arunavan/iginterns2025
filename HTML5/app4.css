@@ -1,0 +1,8 @@
+h2{
+    color:aquamarine;
+    border-color: blueviolet;
+    border:double;
+    background-image:url("flower.jpg");
+    background-repeat: repeat;
+
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+      
+      <style type = "text/css">
+         
+         #boxA, #boxB {
+            float:left;padding:10px;margin:10px; -moz-user-select:none;
+         }
+         #boxA { background-color: #6633FF; width:75px; height:75px;  }
+         #boxB { background-color: #FF6699; width:150px; height:150px; }
+      </style>
+      
+      <script type = "text/javascript">
+         
+         function dragStart(ev) {
+            ev.dataTransfer.effectAllowed = 'move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            ev.dataTransfer.setDragImage(ev.target,0,0);
+            
+            return true;
+         }
+      </script>
+      
+   </head>
+   <body>
+      
+      <center>
+         <h2>Drag and drop HTML5 demo</h2>
+         <div>Try to drag the purple box around.</div>
+         
+         <div id = "boxA" draggable = "true" 
+            ondragstart = "return dragStart(ev)">
+            <p>Drag Me</p>
+         </div>
+         
+         <div id = "boxB">Dustbin</div>
+      </center>
+      
+   </body>
+</html>
