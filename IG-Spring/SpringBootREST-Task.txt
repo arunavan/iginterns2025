@@ -1,0 +1,15 @@
+Create SpringBoot rest application with
+model,entity,controller,service,repository  to add and view all workout data.
+
+Write RestTemplate consumer application
+Create API documentation(Swagger)
+implement Exception handling
+Validate data 
+
+
+Workout:  Model class
+
+Title  
+Duration
+CaloriesBurnt
+Category :  (morningwalk,eveningrun,boxing,swimming etc)
