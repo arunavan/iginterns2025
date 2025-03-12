@@ -1,0 +1,185 @@
+package com.var.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.var.entity.Product;
+import com.var.exception.ProductNotFoundException;
+import com.var.exception.ResourceNotFoundException;
+import com.var.repository.ProductRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class ProductService {
+	@Autowired
+	ProductRepository productRepository;
+	//@Transactional
+	public void addProduct(Product product) {
+		productRepository.save(product);
+	}
+	public List<Product> getAllProducts() {
+		return (List)productRepository.findAll();
+	}
+	public Product getProduct(Integer id) throws ProductNotFoundException{
+		 Product product2=productRepository.findById(id).orElseThrow(() -> new 
+				 ProductNotFoundException());
+		return product2;
+	}
+	//@Transactional
+	public void  deleteProduct(Integer id) throws ProductNotFoundException{
+		 Product product2=productRepository.findById(id).orElseThrow(() -> new 
+				 ProductNotFoundException()); 
+		if(product2!=null)
+		 productRepository.deleteById(id);  //commit, rollback
+	}
+	//@Transactional   //Exception using ResponseStatusException
+	public void  updateProduct(Integer id,Product product) throws ResourceNotFoundException {
+		// Product product1=productRepository.findById(id).get();
+		 Product product2=productRepository.findById(id).orElseThrow(() -> new 
+				 ResourceNotFoundException("Product", "id", id)); 
+			
+		 product2.setName(product.getName());
+	}
+
+}
+
+
+
+
+
+package com.var.exception;
+
+public class ProductNotFoundException extends Exception {
+
+	public ProductNotFoundException() {
+		//super(msg);
+	}
+
+}
+
+
+
+package com.var.util;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import com.var.exception.ProductNotFoundException;
+//@ControllerAdvice  //GlobalException handling
+public class ExceptionAdvice {
+    
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity blogNotFoundException(ProductNotFoundException productException) {
+        return new ResponseEntity("Product NotFound", HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<String> databaseConnectionFailsException(Exception exception) {
+        return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
+package com.var.controller;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.var.dto.ProductDTO;
+import com.var.entity.Product;
+import com.var.exception.ProductNotFoundException;
+import com.var.service.ProductService;
+
+import jakarta.validation.Valid;
+@RestController
+public class ProductController {
+	@Autowired
+	ProductService productService;
+	@Autowired
+	ModelMapper modelMapper;
+	@PostMapping("/product") // http://localhost:8082/product
+	public String  addProduct( @RequestBody ProductDTO productDto)
+	{   Product product=modelMapper.map(productDto, Product.class);
+		productService.addProduct(product);
+		return "Added";
+	}
+	
+	@PostMapping("/addproduct")
+	public ResponseEntity<String>  addProduct1(@RequestBody ProductDTO productDto)
+	{   Product product=modelMapper.map(productDto, Product.class);
+		productService.addProduct(product);
+		return new ResponseEntity<>("Created",HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/product/{id}")
+	public ProductDTO getProduct(@PathVariable("id") Integer id) throws ProductNotFoundException{
+		Product product=productService.getProduct(id);
+		return modelMapper.map(product, ProductDTO.class);
+	}
+	@GetMapping("/product")
+	public List<ProductDTO> getAllProducts() {
+		List<Product> productList= productService.getAllProducts();
+		return productList.stream().map(Product->modelMapper.map(Product,ProductDTO.class)).collect(Collectors.toList());
+		
+	}
+	@PutMapping("/product/{id}")
+	public String updateProduct(@PathVariable("id") Integer id,@RequestBody ProductDTO productDto)  throws Exception{
+		 productService.updateProduct(id,modelMapper.map(productDto, Product.class));
+		 return "updated";
+	}
+	@DeleteMapping("/product/{id}")
+	public String deleteProduct(@PathVariable("id") Integer id) throws ProductNotFoundException {
+		 productService.deleteProduct(id);
+		 return "deleted";
+	}
+}
+
+
+
+=======================@ResponseStatus
+
+package com.var.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+	private String resourceName;
+	private String fieldName;
+	private Object fieldValue;
+
+	public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
+		super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue));
+		this.resourceName = resourceName;
+		this.fieldName = fieldName;
+		this.fieldValue = fieldValue;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public Object getFieldValue() {
+		return fieldValue;
+	}
+}
