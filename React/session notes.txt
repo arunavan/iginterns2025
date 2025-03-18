@@ -1,0 +1,49 @@
+import React,{Component} from "react";
+class App extends React.Component{  //state and props 
+  constructor() {
+    super();
+    this.state = {value: ''};
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value}); //setState
+  }
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+   // event.preventDefault();
+  }
+render(){
+  return (
+   <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange}/>
+        </label>  {this.state.value}
+        <input type="submit" value="Submit" />
+      </form>
+
+  );
+}
+}
+export default App;
+
+class Footer extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      y:200
+    }
+  }
+  render(){
+    var x=this.state.y++   //mutable
+    //var x1=this.props.year++   //immutable
+    return(
+      <div>
+        <h1> Footer :Copyrights reserved by IG  { this.props.year}</h1>
+        <h2> {this.state.y}  {x} </h2>
+      </div>
+      
+    );
+  }
+}
