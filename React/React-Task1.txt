@@ -1,0 +1,10 @@
+
+
+1.Create Counter application using  and Class components.
+display 2 buttons - ++    --
+use state and perform increment and decrement operations using usedefined functions and setState method.
+
+2.Create application to display Mobile details, Id,Model,Price details  using  child component ( MobileDetails).
+
+3.Create application to send number1,number2 values read from form in  App component  and send to  child Calculator component  and perform sum,diff,product calculations and display  results. 
+
