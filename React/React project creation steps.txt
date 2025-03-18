@@ -1,0 +1,18 @@
+npm install -g create-react-app
+npx create-recat-app app1
+cd  app1
+npm start   or npm run
+
+
+using vite  - for fastness
+=================
+npm create vite@latest my-app --template react
+cd my-app
+npm install
+npm run dev
+
+using next.js - for production readiness
+=============
+npx create-next-app@latest my-app
+cd my-app
+npm run dev
