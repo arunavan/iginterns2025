@@ -1,0 +1,435 @@
+
+
+/*
+import React, { Component } from 'react';
+const names=['java','spring','webservcies']
+const numbers = [1, 2, 3, 4, 5];  
+const list = [
+  {
+    id: 'a',
+    firstname: 'Robin',
+    lastname: 'Wieruch',
+    year: 1988,
+  },
+  {
+    id: 'b',
+    firstname: 'Dave',
+    lastname: 'Davidds',
+    year: 1990,
+  },
+];
+
+const initialList = [
+  'Learn React',
+  'Learn Firebase',
+  'Learn GraphQL',
+];
+
+class App extends Component {
+  render() {
+    const nlist=names.map( (n) => <li> {n} </li>);
+       return (
+      <div >
+           <div>
+            <ol>{nlist}</ol>
+            </div>
+            <div>
+            <NumberList numbers={numbers}/>
+             </div>
+             <div>
+              <ComplexList/>
+              <ListWithAddItem/>
+             </div>
+   	 </div>
+    );
+  }
+}
+export default App;
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((x) =>    <li>{x}</li>  );
+  return (
+    <div>
+    <ul>{listItems}</ul>
+    <ol>{listItems}</ol>
+    </div>
+  );
+}
+function ComplexList() {
+  return (
+  <ul>
+    {list.map(x => (
+      <li key={x.id}> <div>{x.id}</div> <div>{x.firstname}</div> <div>{x.lastname}</div>
+        <div>{x.year}</div>
+      </li>
+    ))}
+  </ul>
+  );
+
+}
+
+function  ListWithAddItem () {
+  const [value, setValue] = React.useState('');
+  const [list, setList] = React.useState(initialList); //setstate
+const handleChange = event => {  setValue(event.target.value);  };
+const handleSubmit = event => {
+    if (value) {      setList(list.concat(value));    }
+     event.preventDefault();
+  };
+  return (
+    <div><ul> {list.map(item => (   <li key={item}>{item}</li> ))}
+      </ul>
+    <form onSubmit={handleSubmit}>
+        <input type="text" value={value} onChange={handleChange} />
+        <button type="submit">Add Item</button>
+      </form>
+    </div>
+  );
+        }
+
+
+        */
+/*
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date : new Date()};
+  }
+  componentDidMount() {
+       this.timerID = setInterval( () => this.tick(),
+      1000
+    );
+    console.log(' mounted....')
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+    console.log(' un mounted....')
+  }
+componentDidUnMount(){
+console.log('Component un mounted')
+}
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+*/
+
+/*
+import React, { useEffect } from "react";
+// Higher-Order Component
+const withLogging = (WrappedComponent) => {
+  return (props) => {
+    useEffect(() => {
+      console.log(`Component ${WrappedComponent.name} mounted`);
+      return () => console.log(`Component ${WrappedComponent.name} unmounted`);
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+// A simple functional component
+const HelloWorld = ({ name }) => {
+  return <h1>Hello, {name}!</h1>;
+};
+
+// Enhanced component with logging
+const HelloWorldWithLogging = withLogging(HelloWorld);
+
+// Usage
+const App = () => {
+  return <HelloWorldWithLogging name="Alice" />;
+};
+
+export default App;
+*/
+
+/*  Higher ORder Componnets
+import React, { Component } from 'react';
+import Hoc from './Hoc';
+class App extends Component {
+render() {
+return (
+<div>
+<h2>Hello World!!</h2>
+<p> Have a Great day.</p>
+</div>
+)
+}
+}
+App = Hoc(App);
+export default App;
+
+
+*/
+
+/* with Context API 
+import React, { useState } from "react"
+import { ThemeContext, themes } from "./contexts/ThemeContext"
+import Navbar from "./components/Navbar"
+import Button from "./components/Button"
+
+const App = () => {
+  const [theme, setTheme] = useState(themes.light)
+
+  const toggleTheme = () => {
+    setTheme(state => (state === themes.light ? themes.dark : themes.light))
+  }
+
+  return (
+    <div className="App">
+      <ThemeContext.Provider value={theme}>
+        <Navbar />
+        <Button changeTheme={toggleTheme} />
+      </ThemeContext.Provider>
+    </div>
+  )
+}
+
+export default App
+
+*/
+/*   without ContextAPI
+
+export default function App() {
+  const theme = 'white';
+  return <Parent theme={theme} />;
+}
+
+function Parent({ theme }) {
+  return <Child theme={theme} />;
+}
+
+function Child({ theme }) {
+  return <Button theme={theme} />;
+}
+
+function Button({ theme }) {
+  return <button style={{ background: theme === 'dark' ? 'black' : 'white' }}>Click me</button>;
+}
+
+*/
+
+/*import React,{Component} from "react";
+class App extends React.Component{  //state and props 
+  constructor() {
+    super();
+    this.state = {value: ''};
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value}); //setState
+  }
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+   // event.preventDefault();
+  }
+render(){
+  return (
+   <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange}/>
+        </label>  {this.state.value}
+        <input type="submit" value="Submit" />
+      </form>
+
+  );
+}
+}
+export default App;
+
+class Footer extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      y:200
+    }
+  }
+  render(){
+    var x=this.state.y++   //mutable
+    //var x1=this.props.year++   //immutable
+    return(
+      <div>
+        <h1> Footer :Copyrights reserved by IG  { this.props.year}</h1>
+        <h2> {this.state.y}  {x} </h2>
+      </div>
+      
+    );
+  }
+}
+
+*/
+
+/*
+ var i=1
+
+   <h2>{5+5}</h2>
+   <h1>{i==1?'True!':'False'}</h1>
+
+
+var myStyle={
+fontSize:100,
+color:'#FF0000'
+}
+
+<h1 style ={myStyle}>Header</h1>
+
+constructor(){
+  super();
+  this.state={    x:100,    name:"IGUSer123"  }
+  }
+ render(){
+  var myStyle={
+    fontSize:50,
+    color:'#FF0000',
+    
+  }
+     return(
+          <div> <h1 style={myStyle}> welcome to  Class Components</h1>
+             <h1> { this.state.x}  { this.state.name }</h1>
+          <div>
+        <Footer year="2025"/>
+        </div>
+    </div>
+    );
+  }
+}
+
+//comment  
+
+constructor(){
+  super()
+  this.state={
+    n:10
+  }
+ }
+  {this.state.n}
+
+
+
+ constructor(props){
+    super(props);
+        
+    this.state={
+    header:"Header from state...",
+    content:"Content from state..."
+    }
+    }
+     
+
+      <h1> {this.state.header}</h1>
+
+      //setState
+constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+
+
+   <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+
+      
+
+
+
+ constructor(props) {
+    super(props);
+    this.state = {
+      value: 'Please write an essay about your favorite DOM element.'
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('An essay was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Essay:
+          <textarea value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+
+   */
+
+
+
+
+
+
+
+
+
+/*
+import Header from "./Header";
+function App() {
+  return (
+    <div>
+      <div>
+        <Header/>
+      </div>
+     <h1> welcome to IG React session</h1>
+         <div>
+          <Child/>
+         </div>
+    </div>
+  );
+}
+export default App;
+
+function Child(){
+  return(
+    <div>
+        <h2> Child component </h2>
+    </div>
+  );
+}
+
+*/
