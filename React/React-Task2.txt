@@ -1,0 +1,15 @@
+
+Login
+1.Create React application using Functional components , to display LoginForm, input ID,PWD
+check ID and PWD should be "iguser" and "password" , once form submitted , alert("Valid User")  else
+"Invaild USer".  ( Forms, useState).
+
+Signup
+2.Create React application to Signup Customer with details and review details 
+by clicking on Review button.
+CustomerId,Name,Email,Gender,City(Hyd,Chennai,Pune...).
+
+3.Create App(Home component)  and embed Login,SignUp components.
+
+
+
