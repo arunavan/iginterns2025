@@ -1,0 +1,95 @@
+
+
+export default function App() {
+  const theme = 'white';
+  return <Parent theme={theme} />;
+}
+
+function Parent({ theme }) {
+  return <Child theme={theme} />;
+}
+
+function Child({ theme }) {
+  return <Button theme={theme} />;
+}
+
+function Button({ theme }) {
+  return <button style={{ background: theme === 'dark' ? 'black' : 'white' }}>Click me</button>;
+}
+
+
+================================contexts/ThemeContext.js
+
+import { createContext } from "react";
+export const themes = {
+  light: {
+    background: "white",
+    text: "black",
+  },
+  dark: {
+    background: "black",
+    text: "white",
+  },
+};
+
+export const ThemeContext = createContext(themes.light);
+=======================================src/App.js
+import React, { useState } from "react"
+import { ThemeContext, themes } from "./contexts/ThemeContext"
+import Navbar from "./components/Navbar"
+import Button from "./components/Button"
+
+const App = () => {
+  const [theme, setTheme] = useState(themes.light)
+
+  const toggleTheme = () => {
+    setTheme(state => (state === themes.light ? themes.dark : themes.light))
+  }
+
+  return (
+    <div className="App">
+      <ThemeContext.Provider value={theme}>
+        <Navbar />
+        <Button changeTheme={toggleTheme} />
+      </ThemeContext.Provider>
+    </div>
+  )
+}
+
+export default App
+===================================src/components/Button.js
+import React, { useContext } from "react"
+import { ThemeContext } from "../contexts/themeContext"
+
+const Button = ({ changeTheme }) => {
+  const theme = useContext(ThemeContext)
+
+  return (
+    <button
+      style={{ backgroundColor: theme.background, color: theme.text }}
+      onClick={changeTheme}
+    >
+      Toggle theme
+    </button>
+  )
+}
+
+export default Button
+==============================================src/components/Navbar.js
+import React, { useContext } from "react"
+import { ThemeContext } from "../contexts/themeContext"
+
+const Navbar = () => {
+  const theme = useContext(ThemeContext)
+
+  return (
+    <nav style={{ backgroundColor: theme.background }}>
+      <ul>
+        <li style={{ color: theme.text }}>Home</li>
+        <li style={{ color: theme.text }}>About</li>
+      </ul>
+    </nav>
+  )
+}
+
+export default Navbar
