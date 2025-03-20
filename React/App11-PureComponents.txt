@@ -1,0 +1,32 @@
+//PureComponents
+import React,{useState} from "react";
+
+ class Greeting  extends React.PureComponent {
+  constructor(props){
+super(props);
+}
+    render() {
+        return <h1>Welcome to PureComponents : {  this.props.name}</h1>;
+    }
+}
+
+
+export default function App(){
+const [name,setName]=useState('');
+  return (
+<>
+    Name :<input value={name} onChange={e=>setName(e.target.value)}/>
+     <Greeting name={name}/>
+</>
+
+);
+}
+
+/*
+Shallow Comparison:
+Pure components perform a shallow comparison of the props and states. If the objects are passed as props or states have the same references, a re-render is prevented.
+
+Performance Optimization:
+Pure components can provide performance optimizations by preventing unnecessary re-renders when the data is the same and hasn’t been modified.
+
+*/
