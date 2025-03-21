@@ -1,0 +1,206 @@
+npm install react-router-dom
+
+
+
+What is React Router?
+React Router is a standard library for creating dynamic routes and navigation in React JS Applications. It allows you to manage navigation in your app by defining routes that connect the URL paths to specific components.
+
+With React Router, you can implement different views for different parts of your application without the need for a full-page refresh. This is a key feature of single-page applications (SPAs), where only the necessary content is updated as the user navigates.
+
+
+Components of React Router
+React Router mainly comprises of the below components
+
+1. BrowserRouter and HashRouter
+BrowserRouter: Uses the HTML5 history API to keep your UI in sync with the URL.
+HashRouter: Uses the hash portion of the URL (i.e., window.location.hash) to keep your UI in sync with the URL.
+<BrowserRouter>
+    (/* Your routes go here */}
+</BrowserRouter>
+
+
+2. Routes and Route
+Routes: A container for all your route definitions.
+Route: Defines a single route with a path and the component to render.
+<Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/about" element={<About />} />
+</Routes>
+
+3. Link and NavLink
+Link: Creates navigational links in your application.
+NavLink: Similar to Link but provides additional styling attributes when the link is active.
+<nav>
+    <NavLink to="/" activeClassName="active">Home</NavLink>
+    <Link to="/about">About</Link>
+</nav>
+
+
+Uses of React Router
+Navigation and Routing: React Router provides a declarative way to navigate between different views or pages in a React application. It allows users to switch between views without refreshing the entire page.
+Dynamic Routing: React Router supports dynamic routing, which means routes can change based on the application’s state or data, making it possible to handle complex navigation scenarios.
+URL Management: React Router helps manage the URLs in your application, allowing for deep linking, bookmarkable URLs, and maintaining the browser’s history stack.
+Component-Based Approach: Routing is handled through components, making it easy to compose routes and navigation in a modular and reusable way.
+===================index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+    <App />
+    </BrowserRouter>
+);
+
+==========================App.js
+
+
+import { Routes, Route, Outlet, Link } from "react-router-dom";
+
+export default function App() {
+  return (
+    <div>
+      <h1>Basic Example</h1>
+
+      <p>
+        This example demonstrates some of the core features of React Router
+        including nested <code>&lt;Route&gt;</code>s,{" "}
+        <code>&lt;Outlet&gt;</code>s, <code>&lt;Link&gt;</code>s, and using a
+        "*" route (aka "splat route") to render a "not found" page when someone
+        visits an unrecognized URL.
+      </p>
+
+      {/* Routes nest inside one another. Nested route paths build upon
+            parent route paths, and nested route elements render inside
+            parent route elements. See the note about <Outlet> below. */}
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* Using path="*"" means "match anything", so this route
+                acts like a catch-all for URLs that we don't have explicit
+                routes for. */}
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </div>
+  );
+}
+
+function Layout() {
+  return (
+    <div>
+      {/* A "layout route" is a good place to put markup you want to
+          share across all the pages on your site, like navigation. */}
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/nothing-here">Nothing Here</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <hr />
+
+      {/* An <Outlet> renders whatever child route is currently active,
+          so you can think about this <Outlet> as a placeholder for
+          the child routes we defined above. */}
+      <Outlet />
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+      <h2>Home</h2>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h2>About</h2>
+    </div>
+  );
+}
+
+function Dashboard() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+    </div>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div>
+      <h2>Nothing to see here!</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
+  );
+}
+==============================routing with params
+
+import React from "react";
+import { BrowserRouter, Routes,  Route, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
+const Home = () => (
+  <div>
+    <h2>Home Page</h2>
+    <p>Click on a user to see details.</p>
+    <ul>
+      <li>
+        <Link to="/user/1">User 1</Link>
+      </li>
+      <li>
+        <Link to="/user/2">User 2</Link>
+      </li>
+    </ul>
+  </div>
+);
+
+const UserDetail = () => {
+  let { userId } = useParams(); // Extracting userId from URL
+  return (
+    <div>
+      <h2>User Detail Page</h2>
+      <p>User ID: {userId}</p>
+      <Link to="/">Go Back</Link>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Routes>
+      <Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/user/:userId" element={<UserDetail />} />
+      </Route>
+    </Routes>
+  );
+};
+
+export default App;
