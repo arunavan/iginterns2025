@@ -1,0 +1,38 @@
+A Higher-Order Component (HOC) in React is a function that takes a component and returns a new component with added functionality. Here's a simple example of an HOC that adds logging behavior to a functional component:
+
+
+App.js
+
+import React, { useEffect } from "react";
+// Higher-Order Component
+const withLogging = (WrappedComponent) => {
+  return (props) => {
+    useEffect(() => {
+      console.log(`Component ${WrappedComponent.name} mounted`);
+      return () => console.log(`Component ${WrappedComponent.name} unmounted`);
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+// A simple functional component
+const HelloWorld = ({ name }) => {
+  return <h1>Hello, {name}!</h1>;
+};
+
+// Enhanced component with logging
+const HelloWorldWithLogging = withLogging(HelloWorld);
+
+// Usage
+const App = () => {
+  return <HelloWorldWithLogging name="Alice" />;
+};
+
+export default App;
+
+
+withLogging is an HOC that wraps another component and logs when it mounts/unmounts.
+HelloWorld is a simple functional component that displays a greeting.
+HelloWorldWithLogging is the enhanced version of HelloWorld with logging behavior.
+The App component renders HelloWorldWithLogging.
