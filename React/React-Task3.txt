@@ -1,0 +1,7 @@
+1. Create HOCList component that display ProductList, EmployeeList  using boostrap table.
+
+2. Create ProductComponent  using FetchAPi to display product details in tabular format.
+
+3.Create Routing path for  HomePage, LoginComponent,SignupComponent.
+
+  
