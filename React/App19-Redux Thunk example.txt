@@ -105,24 +105,27 @@ const Users = () => {
 };
 
 export default Users;
+
 6==> Wrap App with Redux Provider (index.js)
-
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import {createRoot} from 'react-dom/client';
+import Users from './Users';
+import { Provider } from 'react-redux';
 import store from "./store";
-import Users from "./Users";
-
-ReactDOM.render(
-  <Provider store={store}>
-    <Users />
-  </Provider>,
-  document.getElementById("root")
-);
-
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+root.render(
+    <Provider store={store}>
+      <Users/>
+    </Provider>
+  );
+ 
  
 ->Redux Store is set up with redux-thunk.
 ->Actions (userActions.js) handle API calls asynchronously.
 ->Reducer (userReducer.js) updates the state based on action results.
 ->Component (Users.js) dispatches fetchUsers() on mount.
 ->Redux Provider wraps the app in index.js to give access to the Redux store.
+
+
+
+
