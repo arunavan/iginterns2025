@@ -1,0 +1,128 @@
+React Redux Thunk Example
+Redux Thunk allows you to handle async operations (like API calls) inside Redux actions.
+
+Steps to Implement Redux Thunk in React
+Install dependencies
+Setup Redux store
+Create actions with Thunk
+Create reducers
+Use in React Component
+1=>Install Dependencies
+Run the following command:
+
+npm install redux react-redux redux-thunk axios
+
+2=> Create Redux Store (store.js)
+
+import { createStore, applyMiddleware } from "redux";
+import { thunk } from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import userReducer from "./userReducer"; // Import Reducer
+
+const store = createStore(userReducer, composeWithDevTools(applyMiddleware(thunk)));
+
+export default store;
+3==>Create Actions with Redux Thunk (userActions.js)
+
+import axios from "axios";
+export const fetchUsersRequest = () => ({
+  type: "FETCH_USERS_REQUEST",
+});
+
+export const fetchUsersSuccess = (users) => ({
+  type: "FETCH_USERS_SUCCESS",
+  payload: users,
+});
+
+export const fetchUsersFailure = (error) => ({
+  type: "FETCH_USERS_FAILURE",
+  payload: error,
+});
+
+// **Async Action using Thunk**
+export const fetchUsers = () => {
+  return async (dispatch) => {
+    dispatch(fetchUsersRequest());
+    try {
+      const response = await axios.get("https://jsonplaceholder.typicode.com/users");
+      dispatch(fetchUsersSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchUsersFailure(error.message));
+    }
+  };
+};
+
+4=> Create Reducer (userReducer.js)
+
+const initialState = {
+  loading: false,
+  users: [],
+  error: null,
+};
+
+const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "FETCH_USERS_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_USERS_SUCCESS":
+      return { loading: false, users: action.payload, error: null };
+    case "FETCH_USERS_FAILURE":
+      return { loading: false, users: [], error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export default userReducer;
+
+5==>Use Thunk in a React Component (Users.js)
+
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsers } from "./userActions";
+
+const Users = () => {
+  const dispatch = useDispatch();
+  const { loading, users, error } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
+  return (
+    <div>
+      <h2>Users List</h2>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name} - {user.email}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Users;
+6==> Wrap App with Redux Provider (index.js)
+
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import Users from "./Users";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Users />
+  </Provider>,
+  document.getElementById("root")
+);
+
+ 
+->Redux Store is set up with redux-thunk.
+->Actions (userActions.js) handle API calls asynchronously.
+->Reducer (userReducer.js) updates the state based on action results.
+->Component (Users.js) dispatches fetchUsers() on mount.
+->Redux Provider wraps the app in index.js to give access to the Redux store.
