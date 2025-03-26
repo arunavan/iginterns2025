@@ -1,0 +1,109 @@
+server:
+ port: 8888
+eureka:
+ client:
+  service-url:
+   defaultZone: http://localhost:8761/eureka
+spring:
+ main:
+  web-application-type: reactive
+ application:
+  name: gatewayapp
+ cloud:
+   gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: producer
+        uri: http://localhost:8081/
+        predicates:
+        - Path=/producer/**
+        
+      - id: consumer
+        uri: http://localhost:8082/
+        predicates:
+        - Path=/consumer/**
+
+
+
+import java.time.Duration;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class GatewayappApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(GatewayappApplication.class, args);
+	}
+
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+
+		return new RestTemplate();
+	}
+}
+
+
+
+
+<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+			
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
