@@ -1,0 +1,16 @@
+Create ProductService, ProductClient   microservices, Eureka.
+
+Create a microservice to search for a product 
+Recommend similar products based on product added in cart.
+
+/product/id
+if product is selected from ProductList , check price of the product  if price is below 1000, add to cart ( another arraylist-CartList).
+
+/product/recommendations
+  display all products price is  <= of price of products in CartList.
+
+* optional Create Gateway service , test endpoints through gateway app.
+
+
+
+
