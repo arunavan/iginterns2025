@@ -1,0 +1,50 @@
+-> create Dockerfile in root path of springboot project
+
+-> run mvn clean install 
+
+
+From openjdk:11
+EXPOSE 8087
+copy ./target/xxx.jar xxx.jar
+CMD ["java","-jar","xxx.jar"]
+
+
+-> to build image
+
+docker image build -t xxx-app .
+
+-> to create container locally
+
+docker container run --name xxx-app -p 8087:8087 -d xxx-app
+
+docker ps -a 
+
+-> to display logs of container created 
+
+docker container logs xxx-app
+
+docker container logs -f xxx-app
+
+docker tag  c39c9dee1489 or imagename  aruna708/xxx:latest
+
+docker push aruna708/xxx:latest
+
+docker push aruna708/product-app   ->local to docker hub
+docker pull product-app   -> docker hub to local
+
+to run from docker hub
+docker  run  -p 8087:8087 aruna708/sb1-app
+
+
+
+docker rmi aruna708/imagename:latest
+
+kubectl run mykubernetes-springboot --image=aruna708/ProductRESTApp-0.0.1-SNAPSHOT --port=8088
+
+kubectl get deployments
+
+kubectl expose deployment/mykubernetes-springboot --type="NodePort" --port 8088
+
+kubectl describe services/mykubernetes-springboot
+
+minikube service mykubernetes-springboot --url
