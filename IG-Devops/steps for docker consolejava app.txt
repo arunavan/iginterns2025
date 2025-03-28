@@ -1,0 +1,47 @@
+docker 
+
+
+
+
+steps:
+
+mkdir  java-app 
+
+----> create CustomerApp.java
+
+class CustomerApp{  
+public static void main(String[] args){  
+System.out.println("This is CustomerApp app \n by using Docker");  
+}  
+}  
+
+create Dockerfile in same folder:
+----->create Dockerfile
+
+FROM java:8  
+COPY . /var/www/java  
+WORKDIR /var/www/java  
+RUN javac CustomerApp.java  
+CMD ["java", "CustomerApp"]   
+
+--------> move the the java-docker-app folder 
+
+creating image
+ 
+docker image build -t java-app .
+
+docker run java-app   -> local container running
+
+--------->
+docker tag tagname/id  aruna708/java-app:latest
+
+docker push aruna708/java-app:latest
+
+
+docker run java-app   -> local container
+
+docker run aruna708/java-app:latest  -> remote /registry
+
+docker rmi java-app  -> remove image
+docker rmi aruna708/java-app -f   ->
+
