@@ -1,0 +1,30 @@
+create docker-compose.yml
+
+version: "3.9" 
+ services:
+  web:
+    image: node
+  database:
+    image: redis
+
+== > installing docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+==> grant permission
+
+sudo chmod +x /usr/local/bin/docker-compose
+================= docker-compose.yml
+services:
+  web:
+    image: nginx:latest
+  database:
+    image: redis
+=====================
+
+
+docker-compose config
+
+docker-compose up -d
+
+docker-compose down
+
