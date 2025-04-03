@@ -1,0 +1,376 @@
+================application.properties
+
+
+spring.application.name=springrestassociations
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url = jdbc:mysql://localhost:3306/ig
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL8Dialect
+
+ # Hibernate ddlauto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.show-sql=true
+
+springdoc.api-docs.path=/api-docs
+
+
+=====================pom.xml---dependencies
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+		</dependency>
+		
+			<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<!--<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+============entities
+package com.var.entity;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @NotNull
+    //@Size(max = 100)
+    @Column(unique = true)
+    private String text;
+    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL )
+    @JoinColumn(name = "post_id")
+     private Post post;
+     public Comment(){}
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getText() {
+        return text;
+    }
+    public void setText(String title) {
+        this.text = title;
+    }
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+}
+
+
+
+package com.var.entity;
+import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+@Entity
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @NotNull
+    @Column(unique = true)
+    private String title;
+    @NotNull
+      private String description;
+    @NotNull
+    @Lob
+    private String content;
+    public Post(){}
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}
+
+
+
+==============repository
+
+package com.var.repository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import com.var.entity.Comment;
+@Repository
+public interface CommentRepository extends CrudRepository<Comment,Long> {
+    List<Comment> findByPostId(Long postId);
+    Optional<Comment> findByIdAndPostId(Long id, Long postId);
+}
+
+
+
+
+package com.var.repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import com.var.entity.Post;
+@Repository
+public interface PostRepository extends CrudRepository<Post,Long> {
+}
+
+===============controller
+
+package com.var.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.var.entity.Post;
+import com.var.repository.PostRepository;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+@RestController
+public class PostController {
+    @Autowired
+    private PostRepository postRepository;
+
+    @GetMapping("/posts")
+    public List<Post> getAllPosts() {
+        List<Post> posts=new ArrayList<>();
+        postRepository.findAll().forEach(posts::add);
+        return posts;
+    }
+      @PostMapping("/posts")
+    @Transactional
+    public Post createPost(@Valid @RequestBody Post post) {
+        return postRepository.save(post);
+    }
+      @PutMapping("/posts/{postId}")
+    @Transactional
+    public Post updatePost(@PathVariable Long postId, @Valid @RequestBody Post post) {
+        return postRepository.save(post);
+    }
+   @DeleteMapping("/posts/{postId}")
+    @Transactional
+    public void deletePost(@PathVariable Long postId) {
+        postRepository.deleteById(postId);
+    }
+}
+
+
+
+package com.var.controller;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import com.var.entity.Comment;
+import com.var.exception.ResourceNotFoundException;
+import com.var.repository.CommentRepository;
+import com.var.repository.PostRepository;
+import jakarta.validation.Valid;
+@RestController
+public class CommentController {
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @GetMapping("/posts/{postId}/comments")
+    public List<Comment> getAllCommentsByPostId(@PathVariable Long postId) {
+        return commentRepository.findByPostId(postId);
+    }
+    /*
+    [
+     {
+       "id": 1,
+       "text": "excellent",
+       "post": {
+         "id": 3,
+         "title": "java",
+         "description": "javaprogramming",
+         "content": "coding examples"
+       }
+     },
+     {
+       "id": 2,
+       "text": "very good",
+       "post": {
+         "id": 3,
+         "title": "java",
+         "description": "javaprogramming",
+         "content": "coding examples"
+       }
+     }
+   ]
+		   */
+    @PostMapping("/posts/{postId}/comments")
+    public Comment createComment(@PathVariable Long postId, @Valid @RequestBody Comment comment) {
+        return postRepository.findById(postId).map(post -> {
+            comment.setPost(post);
+            return commentRepository.save(comment);
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
+    } /*
+    
+    
+    
+    
+    {
+    	  "id": 1,
+    	  "text": "excellent",
+    	  "post": {
+    	    "id": 3,
+    	    "title": "java",
+    	    "description": "javaprogramming",
+    	    "content": "coding examples"
+    	  }
+    	}
+       	
+    	
+  "id": 2,
+  "text": "very good",
+  "post": {
+    "id": 3,
+    "title": "java",
+    "description": "javaprogramming",
+    "content": "coding examples"
+  }
+}
+    	*/
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public Comment updateComment(@PathVariable Long postId,
+                                 @PathVariable Long commentId,
+                                 @Valid @RequestBody Comment commentRequest) {
+        if(!postRepository.existsById(postId)) {
+            throw new ResourceNotFoundException("PostId " + postId + " not found");
+        }
+
+            return commentRepository.save(commentRequest);
+    }
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable (value = "postId") Long postId,
+                                           @PathVariable (value = "commentId") Long commentId) {
+        return commentRepository.findByIdAndPostId(commentId, postId).map(comment -> {
+            commentRepository.delete(comment);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("Comment not found with id " + commentId + " and postId " + postId));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+================exception
+package com.var.exception;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException() {
+        super();
+    }
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+    public ResourceNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
