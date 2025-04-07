@@ -1,0 +1,18 @@
+kubectl create deployment ig-sb-app --image=aruna708/springboot-app
+
+kubectl get deployments
+
+kubectl expose deployment ig-sb-app --type=NodePort --port=8087
+
+kubectl get pods
+
+kubectl get node
+
+kubectl get service
+
+kubectl describe services/ig-sb-app
+
+minikube  service ig-sb-app --url
+
+
+localhost:8087/welcome
