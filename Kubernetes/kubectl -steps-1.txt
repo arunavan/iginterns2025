@@ -1,0 +1,33 @@
+
+https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/#install-kubectl-binary-with-curl-on-windows
+
+->install kubectl - Kubernetes -k8s   client
+===========================
+winget install -e --id Kubernetes.kubectl
+
+kubectl version --client
+kubectl cluster-info
+
+
+kubectl get pods -n kubernetes-dashboard
+kubectl get nodes
+kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+kubectl expose deployment hello-node --type=LoadBalancer --port=8080
+minikube service hello-node --url
+
+
+
+Docker desktop start
+====================
+minikube start --driver=docker
+minikube start --driver=docker --container-runtime=containerd --force-system
+minikube addons enable metrics-server
+
+minikube status
+minikube version
+minikube dashboard --url
+minikube tunnel
+minikube profile list
+minikube kubectl -- get pods -A
+
+
