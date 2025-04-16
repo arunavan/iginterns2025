@@ -1,0 +1,28 @@
+
+==========docker-compose.yml
+version: '3.8'
+services:
+  igjenkins:
+    image: jenkins/jenkins:lts
+    container_name: igjenkins
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  jenkins_home:
+============================
+
+docker exec -it igjenkins bash
+
+apt update
+
+apt install -y docker.io
+
+docker --version
+
+docker ps
